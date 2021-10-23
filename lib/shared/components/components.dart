@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,7 @@ Widget defaultFormField({
   required TextInputType keyboardType,
   String? Function(String?)? validate,
   VoidCallback? onTap,
+  ValueChanged<String>? onSubmit,
   VoidCallback? suffixPressed,
   Function(String?)? onChanged,
   required IconData prefixIcon,
@@ -83,6 +85,7 @@ Widget defaultFormField({
       validator: validate,
       onChanged: onChanged,
       onTap: onTap,
+      onFieldSubmitted: onSubmit,
     );
 //</editor-fold>
 
@@ -95,4 +98,15 @@ void navigateToFinish(context, widget) => Navigator.pushAndRemoveUntil(
         builder: (context) => widget,
       ),
       (Route<dynamic> route) => false,
+    );
+
+buildFlutterToast({
+  required String msg,
+  Color contentColor = Colors.red,
+  double fontSize = 16,
+}) =>
+    BotToast.showText(
+      text: msg,
+      duration: Duration(seconds: 5),
+      contentColor: contentColor,
     );

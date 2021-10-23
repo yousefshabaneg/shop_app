@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/business_logic/login_cubit/login_cubit.dart';
@@ -16,7 +17,19 @@ class LoginScreen extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is LoginSuccessState) {
+            if (state.loginModel.status) {
+              print(state.loginModel.data!.token);
+              buildFlutterToast(
+                msg: state.loginModel.message,
+                contentColor: Colors.green,
+              );
+            } else {
+              buildFlutterToast(msg: state.loginModel.message);
+            }
+          }
+        },
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(),
@@ -77,6 +90,13 @@ class LoginScreen extends StatelessWidget {
                           suffixPressed: () {
                             LoginCubit.get(context).changePasswordVisibility();
                           },
+                          onSubmit: (value) {
+                            if (formKey.currentState!.validate()) {
+                              LoginCubit.get(context).userLogin(
+                                  email: emailController.text,
+                                  password: passwordController.text);
+                            }
+                          },
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -98,16 +118,23 @@ class LoginScreen extends StatelessWidget {
                         SizedBox(
                           height: 10,
                         ),
-                        defaultButton(
-                          text: 'Login',
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              LoginCubit.get(context).userLogin(
-                                  email: emailController.text,
-                                  password: passwordController.text);
-                            }
-                          },
-                          radius: 20,
+                        ConditionalBuilder(
+                          condition: state is! LoginLoadingState,
+                          builder: (context) => defaultButton(
+                            text: 'Login',
+                            isUpperCase: true,
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                LoginCubit.get(context).userLogin(
+                                    email: emailController.text,
+                                    password: passwordController.text);
+                              }
+                            },
+                            radius: 20,
+                          ),
+                          fallback: (context) => Center(
+                            child: CircularProgressIndicator(),
+                          ),
                         ),
                         SizedBox(
                           height: 20,
