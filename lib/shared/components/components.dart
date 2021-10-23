@@ -9,44 +9,71 @@ Widget dividerSeparator() => Divider(
       color: MyColors.dark,
     );
 
+//<editor-fold desc='Default Button'>
+Widget defaultButton({
+  required String text,
+  required VoidCallback onPressed,
+  double height = 60,
+  double width = double.infinity,
+  Color background = Colors.red,
+  Color textColor = Colors.white,
+  double radius = 0.0,
+  bool isUpperCase = true,
+  double fontSize = 18,
+}) =>
+    Container(
+      width: width,
+      height: height,
+      child: MaterialButton(
+        onPressed: onPressed,
+        height: height,
+        child: Text(
+          isUpperCase ? text.toUpperCase() : text,
+          style: TextStyle(
+            color: textColor,
+            fontWeight: FontWeight.bold,
+            fontSize: fontSize,
+          ),
+        ),
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(radius),
+        color: MyColors.primary,
+      ),
+    );
+//</editor-fold>
+
 //<editor-fold desc='Default FormField'>
 Widget defaultFormField({
   required TextEditingController controller,
   required TextInputType keyboardType,
   String? Function(String?)? validate,
-  VoidCallback? onPressed,
+  VoidCallback? onTap,
+  VoidCallback? suffixPressed,
   Function(String?)? onChanged,
   required IconData prefixIcon,
-  double borderRadius = 0,
-  String? hint,
+  double borderRadius = 20,
+  required String label,
   IconData? suffixIcon,
   bool isPassword = false,
-  required bool isRtl,
-  Color color = Colors.black,
-  Color textColor = Colors.white,
+  // required bool isRtl,
 }) =>
     TextFormField(
-      textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
-      textAlign: isRtl ? TextAlign.right : TextAlign.left,
       controller: controller,
-      style: TextStyle(
-        color: textColor,
-      ),
       keyboardType: keyboardType,
       obscureText: isPassword,
       decoration: InputDecoration(
-        hintText: hint,
+        labelText: label,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(borderRadius),
           borderSide: new BorderSide(color: Colors.blue),
         ),
         prefixIcon: Icon(
           prefixIcon,
-          color: color,
         ),
         suffixIcon: suffixIcon != null
             ? IconButton(
-                onPressed: onPressed,
+                onPressed: suffixPressed,
                 icon: Icon(
                   suffixIcon,
                 ),
@@ -55,7 +82,7 @@ Widget defaultFormField({
       ),
       validator: validate,
       onChanged: onChanged,
-      onTap: onPressed,
+      onTap: onTap,
     );
 //</editor-fold>
 

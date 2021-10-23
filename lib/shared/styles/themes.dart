@@ -3,16 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:shop_app/shared/constants/my_colors.dart';
 
 ThemeData lightTheme = ThemeData(
-  inputDecorationTheme: InputDecorationTheme(
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20),
-      borderSide: new BorderSide(color: MyColors.primary),
-    ),
-    hintStyle: TextStyle(
-      color: MyColors.dark,
-      fontWeight: FontWeight.w500,
-    ),
-  ),
   textTheme: TextTheme(
     bodyText1: TextStyle(
       fontSize: 16,
@@ -36,9 +26,6 @@ ThemeData lightTheme = ThemeData(
       color: MyColors.primary,
     ),
   ),
-  iconTheme: IconThemeData(
-    color: MyColors.secondary,
-  ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
     selectedItemColor: MyColors.primary,
@@ -58,17 +45,6 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
-  inputDecorationTheme: InputDecorationTheme(
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20),
-      borderSide: new BorderSide(
-        color: MyColors.primary,
-      ),
-    ),
-    hintStyle: TextStyle(
-      color: Colors.white.withOpacity(0.7),
-    ),
-  ),
   scaffoldBackgroundColor: MyColors.secondary,
   primarySwatch: MyColors.primaryColor,
   appBarTheme: AppBarTheme(
@@ -82,9 +58,6 @@ ThemeData darkTheme = ThemeData(
       fontWeight: FontWeight.bold,
       color: MyColors.primary,
       fontSize: 20,
-    ),
-    iconTheme: IconThemeData(
-      color: Colors.white.withOpacity(0.7),
     ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(

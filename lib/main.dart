@@ -1,10 +1,13 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_app/data/api/api.dart';
+import 'package:shop_app/business_logic/cubit/cubit_observer.dart';
+import 'package:shop_app/data/api/dio_helper.dart';
+import 'package:shop_app/data/cashe_helper.dart';
 import 'package:shop_app/presentation/screens/on_boarding_screen.dart';
 import 'package:shop_app/shared/styles/themes.dart';
-import 'data/cashe_helper.dart';
 
 void main() async {
+  Bloc.observer = MyBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   DioHelper.init();
   await CashHelper.init();
