@@ -92,7 +92,7 @@ Widget defaultFormField({
 void navigateTo(context, widget) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
 
-void navigateToFinish(context, widget) => Navigator.pushAndRemoveUntil(
+void navigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
         builder: (context) => widget,
@@ -100,13 +100,27 @@ void navigateToFinish(context, widget) => Navigator.pushAndRemoveUntil(
       (Route<dynamic> route) => false,
     );
 
-buildFlutterToast({
+void showToast({
   required String msg,
-  Color contentColor = Colors.red,
+  required ToastStates state,
   double fontSize = 16,
 }) =>
     BotToast.showText(
       text: msg,
       duration: Duration(seconds: 5),
-      contentColor: contentColor,
+      contentColor: toastColor(state),
+      clickClose: true,
     );
+
+enum ToastStates { SUCCESS, ERROR, WARNING }
+
+Color toastColor(ToastStates state) {
+  switch (state) {
+    case ToastStates.SUCCESS:
+      return Colors.green;
+    case ToastStates.ERROR:
+      return Colors.red;
+    case ToastStates.WARNING:
+      return Colors.yellow;
+  }
+}

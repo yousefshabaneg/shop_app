@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/data/cashe_helper.dart';
 import 'package:shop_app/presentation/screens/login_screen.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/constants/my_colors.dart';
@@ -52,9 +53,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 fontSize: 18,
               ),
             ),
-            onPressed: () {
-              navigateToFinish(context, LoginScreen());
-            },
+            onPressed: goToLogin,
           )
         ],
       ),
@@ -99,9 +98,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             ),
             InkWell(
               onTap: () {
-                if (isLast())
-                  navigateToFinish(context, LoginScreen());
-                else {
+                if (isLast()) {
+                  goToLogin();
+                } else {
                   _controller.nextPage(
                     duration: Duration(microseconds: 800),
                     curve: Curves.easeInOutQuint,
@@ -140,6 +139,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   bool isLast() {
     return _currentPage == (boardingModels.length - 1);
+  }
+
+  void goToLogin() {
+    CashHelper.saveData(key: 'onBoarding', value: true).then((value) {
+      if (value) {
+        navigateAndFinish(context, LoginScreen());
+      }
+    });
   }
 
   _onChanged(int index) {

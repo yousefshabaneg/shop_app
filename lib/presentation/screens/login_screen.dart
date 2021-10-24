@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/business_logic/login_cubit/login_cubit.dart';
 import 'package:shop_app/business_logic/login_cubit/login_states.dart';
+import 'package:shop_app/data/cashe_helper.dart';
+import 'package:shop_app/layout/shop_layout.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/constants/my_colors.dart';
 
@@ -20,13 +22,16 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is LoginSuccessState) {
             if (state.loginModel.status) {
-              print(state.loginModel.data!.token);
-              buildFlutterToast(
-                msg: state.loginModel.message,
-                contentColor: Colors.green,
-              );
+              CashHelper.saveData(
+                      key: 'token', value: state.loginModel.data!.token)
+                  .then((value) {
+                navigateAndFinish(context, ShopLayout());
+              });
+              showToast(
+                  msg: state.loginModel.message, state: ToastStates.SUCCESS);
             } else {
-              buildFlutterToast(msg: state.loginModel.message);
+              showToast(
+                  msg: state.loginModel.message, state: ToastStates.ERROR);
             }
           }
         },
