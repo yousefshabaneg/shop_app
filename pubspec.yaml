@@ -39,6 +39,7 @@ dependencies:
   google_fonts: ^2.1.0
   smooth_page_indicator: ^1.0.0+2
   bot_toast: ^4.0.1
+  carousel_slider: ^4.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

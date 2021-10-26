@@ -6,10 +6,7 @@ class DioHelper {
   static init() {
     BaseOptions options = BaseOptions(
       baseUrl: baseUrl,
-      connectTimeout: 20 * 1000,
-      receiveTimeout: 20 * 1000,
       receiveDataWhenStatusError: true,
-      headers: {'Content-Type': 'application/json'},
     );
     dio = Dio(options);
   }
@@ -20,9 +17,9 @@ class DioHelper {
         'Content-Type': 'application/json',
       };
 
-  static Future<List<dynamic>> getData({
+  static Future<dynamic> getData({
     required String url,
-    required Map<String, dynamic> query,
+    Map<String, dynamic>? query,
     String lang = 'en',
     String? token,
   }) async {

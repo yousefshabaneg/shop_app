@@ -89,6 +89,8 @@ Widget defaultFormField({
     );
 //</editor-fold>
 
+Widget buildProgressIndicator() => Center(child: CircularProgressIndicator());
+
 void navigateTo(context, widget) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
 
