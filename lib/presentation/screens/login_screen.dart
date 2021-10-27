@@ -16,168 +16,164 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => LoginCubit(),
-      child: BlocConsumer<LoginCubit, LoginStates>(
-        listener: (context, state) {
-          if (state is LoginSuccessState) {
-            if (state.loginModel.status) {
-              CashHelper.saveData(
-                      key: 'token', value: state.loginModel.data!.token)
-                  .then((value) {
-                navigateAndFinish(context, ShopLayout());
-              });
-              showToast(
-                  msg: state.loginModel.message, state: ToastStates.SUCCESS);
-            } else {
-              showToast(
-                  msg: state.loginModel.message, state: ToastStates.ERROR);
-            }
+    return BlocConsumer<LoginCubit, LoginStates>(
+      listener: (context, state) {
+        if (state is LoginSuccessState) {
+          if (state.loginModel.status) {
+            CashHelper.saveData(
+                    key: 'token', value: state.loginModel.data!.token)
+                .then((value) {
+              navigateAndFinish(context, ShopLayout());
+            });
+            showToast(
+                msg: state.loginModel.message, state: ToastStates.SUCCESS);
+          } else {
+            showToast(msg: state.loginModel.message, state: ToastStates.ERROR);
           }
-        },
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(),
-            body: Center(
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                      children: [
-                        Text(
-                          'LOGIN',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 60.0,
-                            color: MyColors.primary,
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(),
+          body: Center(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      Text(
+                        'LOGIN',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 60.0,
+                          color: MyColors.primary,
+                        ),
+                      ),
+                      Text(
+                        'Login now to browse our hot offers.',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: MyColors.darkness,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      defaultFormField(
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        validate: (value) {
+                          return value!.isEmpty
+                              ? 'Please enter a valid email address. '
+                              : null;
+                        },
+                        prefixIcon: Icons.email_outlined,
+                        label: 'Email Address',
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      defaultFormField(
+                        controller: passwordController,
+                        keyboardType: TextInputType.visiblePassword,
+                        validate: (value) {
+                          return value!.isEmpty
+                              ? 'Please enter a valid password with at least 8 letters. '
+                              : null;
+                        },
+                        prefixIcon: Icons.lock_outlined,
+                        label: 'Password',
+                        isPassword: LoginCubit.get(context).isPassword,
+                        suffixIcon: LoginCubit.get(context).suffix,
+                        suffixPressed: () {
+                          LoginCubit.get(context).changePasswordVisibility();
+                        },
+                        onSubmit: (value) {
+                          if (formKey.currentState!.validate()) {
+                            LoginCubit.get(context).userLogin(
+                                email: emailController.text,
+                                password: passwordController.text);
+                          }
+                        },
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              print('Forgotted Password!');
+                            },
+                            child: Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                color: MyColors.dark,
+                                fontSize: 13.0,
+                              ),
+                            ),
                           ),
-                        ),
-                        Text(
-                          'Login now to browse our hot offers.',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: MyColors.darkness,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        defaultFormField(
-                          controller: emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          validate: (value) {
-                            return value!.isEmpty
-                                ? 'Please enter a valid email address. '
-                                : null;
-                          },
-                          prefixIcon: Icons.email_outlined,
-                          label: 'Email Address',
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        defaultFormField(
-                          controller: passwordController,
-                          keyboardType: TextInputType.visiblePassword,
-                          validate: (value) {
-                            return value!.isEmpty
-                                ? 'Please enter a valid password with at least 8 letters. '
-                                : null;
-                          },
-                          prefixIcon: Icons.lock_outlined,
-                          label: 'Password',
-                          isPassword: LoginCubit.get(context).isPassword,
-                          suffixIcon: LoginCubit.get(context).suffix,
-                          suffixPressed: () {
-                            LoginCubit.get(context).changePasswordVisibility();
-                          },
-                          onSubmit: (value) {
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      ConditionalBuilder(
+                        condition: state is! LoginLoadingState,
+                        builder: (context) => defaultButton(
+                          text: 'Login',
+                          isUpperCase: true,
+                          onPressed: () {
                             if (formKey.currentState!.validate()) {
                               LoginCubit.get(context).userLogin(
                                   email: emailController.text,
                                   password: passwordController.text);
                             }
                           },
+                          radius: 20,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                print('Forgotted Password!');
-                              },
-                              child: Text(
-                                'Forgot Password?',
-                                style: TextStyle(
-                                  color: MyColors.dark,
-                                  fontSize: 13.0,
-                                ),
-                              ),
+                        fallback: (context) => buildProgressIndicator(),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Divider(
+                        color: MyColors.black,
+                        height: 30,
+                        thickness: 0.4,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '''Don't have an account? ''',
+                            style: TextStyle(
+                              color: MyColors.dark,
+                              fontSize: 16.0,
                             ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        ConditionalBuilder(
-                          condition: state is! LoginLoadingState,
-                          builder: (context) => defaultButton(
-                            text: 'Login',
-                            isUpperCase: true,
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                LoginCubit.get(context).userLogin(
-                                    email: emailController.text,
-                                    password: passwordController.text);
-                              }
-                            },
-                            radius: 20,
                           ),
-                          fallback: (context) => buildProgressIndicator(),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Divider(
-                          color: MyColors.black,
-                          height: 30,
-                          thickness: 0.4,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '''Don't have an account? ''',
+                          TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Register Now',
                               style: TextStyle(
-                                color: MyColors.dark,
-                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
                               ),
                             ),
-                            TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                'Register Now',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
+                          )
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

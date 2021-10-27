@@ -3,6 +3,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/business_logic/cubit/cubit_observer.dart';
+import 'package:shop_app/business_logic/login_cubit/login_cubit.dart';
 import 'package:shop_app/business_logic/shop_cubit/shop_cubit.dart';
 import 'package:shop_app/data/api/dio_helper.dart';
 import 'package:shop_app/data/cashe_helper.dart';
@@ -26,6 +27,7 @@ void main() async {
   await CashHelper.init();
   bool onBoarding = CashHelper.getData(key: 'onBoarding') ?? false;
   token = CashHelper.getData(key: 'token');
+  print(token);
   Widget widget = chooseWidget(onBoarding: onBoarding, token: token);
 
   runApp(MyApp(onBoarding, widget));
@@ -37,10 +39,18 @@ class MyApp extends StatelessWidget {
   MyApp(this.onBoarding, this.widget);
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => ShopCubit()
-        ..getHomeData()
-        ..getCategories(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (BuildContext context) => LoginCubit(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => ShopCubit()
+            ..getHomeData()
+            ..getCategories()
+            ..getFavorites(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: lightTheme,

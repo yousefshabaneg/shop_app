@@ -39,7 +39,7 @@ Widget defaultButton({
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius),
-        color: MyColors.primary,
+        color: background,
       ),
     );
 //</editor-fold>
@@ -126,3 +126,14 @@ Color toastColor(ToastStates state) {
       return Colors.yellow;
   }
 }
+
+Widget myDivider() => Padding(
+      padding: const EdgeInsetsDirectional.only(
+        start: 20.0,
+      ),
+      child: Container(
+        width: double.infinity,
+        height: 1.0,
+        color: Colors.grey[300],
+      ),
+    );

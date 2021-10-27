@@ -20,14 +20,15 @@ class ProductsScreen extends StatelessWidget {
         return ConditionalBuilder(
           condition: cubit.homeModel != null,
           builder: (context) =>
-              homeBuilder(cubit.homeModel!, cubit.categoriesModel!),
+              homeBuilder(cubit.homeModel!, cubit.categoriesModel!, context),
           fallback: (context) => buildProgressIndicator(),
         );
       },
     );
   }
 
-  Widget homeBuilder(HomeModel homeModel, CategoriesModel categoriesModel) =>
+  Widget homeBuilder(
+          HomeModel homeModel, CategoriesModel categoriesModel, context) =>
       SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
@@ -51,9 +52,6 @@ class ProductsScreen extends StatelessWidget {
                 autoPlayInterval: Duration(seconds: 7),
                 autoPlayCurve: Curves.easeInOutQuint,
               ),
-            ),
-            SizedBox(
-              height: 10,
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
@@ -85,7 +83,7 @@ class ProductsScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 5,
                   ),
                   Text(
                     'New Products',
@@ -107,20 +105,21 @@ class ProductsScreen extends StatelessWidget {
               childAspectRatio: 1 / 1.8,
               children: List.generate(
                 homeModel.data.products.length,
-                (index) => buildGridProduct(homeModel.data.products[index]),
+                (index) =>
+                    buildGridProduct(homeModel.data.products[index], context),
               ),
             ),
           ],
         ),
       );
 
-  Widget buildGridProduct(ProductModel product) => Padding(
+  Widget buildGridProduct(ProductModel product, context) => Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(10, 1, 5, 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(5.0),
               child: Image(
                 image: NetworkImage(product.image),
                 width: double.infinity,
@@ -177,11 +176,19 @@ class ProductsScreen extends StatelessWidget {
                 ),
                 Spacer(),
                 IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.favorite_border,
-                      color: MyColors.primaryColor,
-                    ))
+                  onPressed: () {
+                    ShopCubit.get(context).changeFavorites(product.id);
+                  },
+                  icon: CircleAvatar(
+                    radius: 15,
+                    child: Icon(
+                      ShopCubit.get(context).favorites[product.id]!
+                          ? Icons.favorite
+                          : Icons.favorite_border_outlined,
+                      size: 18,
+                    ),
+                  ),
+                ),
               ],
             ),
           ],
@@ -189,7 +196,7 @@ class ProductsScreen extends StatelessWidget {
       );
 
   Widget buildCategories(DataModel model) => Container(
-        width: 120,
+        width: 110,
         child: Column(
           children: [
             Container(
@@ -197,10 +204,7 @@ class ProductsScreen extends StatelessWidget {
               height: 80.0,
               decoration: new BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(
-                    color: MyColors.primary,
-                    width: 3,
-                    style: BorderStyle.solid),
+                border: Border.all(color: MyColors.info, width: 2),
                 image: new DecorationImage(
                   image: NetworkImage(model.image),
                   fit: BoxFit.cover,

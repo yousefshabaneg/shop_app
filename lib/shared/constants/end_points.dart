@@ -1,5 +1,7 @@
-const login = 'login';
+const Login = 'login';
 
-const home = 'home';
+const Home = 'home';
 
-const categories = 'categories';
+const Categories = 'categories';
+
+const Favorites = 'favorites';
