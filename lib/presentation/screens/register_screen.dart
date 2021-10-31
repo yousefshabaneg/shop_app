@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/business_logic/login_cubit/login_cubit.dart';
 import 'package:shop_app/business_logic/login_cubit/login_states.dart';
-import 'package:shop_app/business_logic/shop_cubit/shop_cubit.dart';
 import 'package:shop_app/data/cashe_helper.dart';
 import 'package:shop_app/layout/shop_layout.dart';
-import 'package:shop_app/presentation/screens/register_screen.dart';
+import 'package:shop_app/presentation/screens/login_screen.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/constants/constants.dart';
 import 'package:shop_app/shared/constants/my_colors.dart';
 
-class LoginScreen extends StatelessWidget {
+class RegisterScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
+  var nameController = TextEditingController();
+  var phoneController = TextEditingController();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   bool isVisible = true;
@@ -21,7 +22,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginStates>(
       listener: (context, state) {
-        if (state is LoginSuccessState) {
+        if (state is RegisterSuccessState) {
           if (state.loginModel.status) {
             CashHelper.saveData(
                     key: 'token', value: state.loginModel.data!.token)
@@ -38,19 +39,23 @@ class LoginScreen extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(),
-          body: Center(
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Form(
-                  key: formKey,
+          body: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Form(
+                key: formKey,
+                child: Container(
+                  height: MediaQuery.of(context).size.height - 30,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(
+                        height: 30,
+                      ),
                       Text(
-                        'Welcome \n Back',
+                        'Create \n An Account',
                         style: TextStyle(
                           fontWeight: FontWeight.w900,
                           fontSize: 30.0,
@@ -59,16 +64,39 @@ class LoginScreen extends StatelessWidget {
                           color: MyColors.primary,
                         ),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
                       Text(
-                        'Login now to browse our hot offers.',
+                        'Register now to browse our hot offers.',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                           color: MyColors.darkness,
                         ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      defaultFormField(
+                        controller: nameController,
+                        keyboardType: TextInputType.name,
+                        validate: (value) {
+                          return value!.isEmpty ? 'Enter your name. ' : null;
+                        },
+                        prefixIcon: Icons.account_circle_outlined,
+                        label: 'Name',
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      defaultFormField(
+                        controller: phoneController,
+                        keyboardType: TextInputType.phone,
+                        validate: (value) {
+                          return value!.isEmpty || value.length < 11
+                              ? 'Please enter a valid phone number. '
+                              : null;
+                        },
+                        prefixIcon: Icons.phone_android_outlined,
+                        label: 'Phone',
                       ),
                       SizedBox(
                         height: 20,
@@ -102,53 +130,29 @@ class LoginScreen extends StatelessWidget {
                         suffixPressed: () {
                           LoginCubit.get(context).changePasswordVisibility();
                         },
-                        onSubmit: (value) {
-                          if (formKey.currentState!.validate()) {
-                            LoginCubit.get(context).userLogin(
-                                email: emailController.text,
-                                password: passwordController.text);
-                          }
-                        },
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              print('Forgotted Password!');
-                            },
-                            child: Text(
-                              'Forgot Password?',
-                              style: TextStyle(
-                                color: MyColors.dark,
-                                fontSize: 13.0,
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 15,
                       ),
                       ConditionalBuilder(
-                        condition: state is! LoginLoadingState,
+                        condition: state is! RegisterLoadingState,
                         builder: (context) => defaultButton(
-                          text: 'Login',
+                          text: 'Register',
                           isUpperCase: true,
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
-                              LoginCubit.get(context).userLogin(
-                                  email: emailController.text,
-                                  password: passwordController.text);
+                              LoginCubit.get(context).userRegister(
+                                name: nameController.text,
+                                phone: phoneController.text,
+                                email: emailController.text,
+                                password: passwordController.text,
+                              );
                             }
                           },
                           radius: 30,
                           background: MyColors.primary,
                         ),
                         fallback: (context) => buildProgressIndicator(),
-                      ),
-                      SizedBox(
-                        height: 20,
                       ),
                       Divider(
                         color: MyColors.black,
@@ -159,7 +163,7 @@ class LoginScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '''Don't have an account? ''',
+                            'Already have an account ?',
                             style: TextStyle(
                               color: MyColors.dark,
                               fontSize: 16.0,
@@ -167,10 +171,10 @@ class LoginScreen extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              navigateAndFinish(context, RegisterScreen());
+                              navigateAndFinish(context, LoginScreen());
                             },
                             child: Text(
-                              'Create One',
+                              'Login',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,

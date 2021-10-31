@@ -64,6 +64,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
+  color_models:
+    dependency: transitive
+    description:
+      name: color_models
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1"
   conditional_builder_null_safety:
     dependency: "direct main"
     description:
@@ -85,6 +92,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  curved_navigation_bar:
+    dependency: "direct main"
+    description:
+      name: curved_navigation_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   dio:
     dependency: "direct main"
     description:
@@ -125,6 +139,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.3.1"
+  flutter_color_models:
+    dependency: transitive
+    description:
+      name: flutter_color_models
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1"
+  flutter_custom_clippers:
+    dependency: "direct main"
+    description:
+      name: flutter_custom_clippers
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -149,6 +177,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  gradients:
+    dependency: "direct main"
+    description:
+      name: gradients
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1+1"
   hexcolor:
     dependency: "direct main"
     description:
@@ -170,6 +205,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+  intl:
+    dependency: "direct main"
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.17.0"
   js:
     dependency: transitive
     description:
@@ -205,6 +247,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  num_utilities:
+    dependency: transitive
+    description:
+      name: num_utilities
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   path:
     dependency: transitive
     description:
@@ -261,6 +310,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
+  powers:
+    dependency: transitive
+    description:
+      name: powers
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0+2"
   process:
     dependency: transitive
     description:

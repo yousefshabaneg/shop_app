@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:shop_app/shared/constants/strings.dart';
 
@@ -41,7 +43,46 @@ class DioHelper {
     String? token,
   }) async {
     dio.options.headers = _headers(lang, token);
+    return dio
+        .post(url, queryParameters: query, data: data)
+        .catchError((error) {
+      print('DIO CLASS ERROR: $error');
+    });
+  }
 
-    return dio.post(url, queryParameters: query, data: data);
+  static Future<Response> putData({
+    required String url,
+    required Map<String, dynamic> data,
+    Map<String, dynamic>? query,
+    String lang = 'en',
+    String? token,
+  }) async {
+    dio.options.headers = _headers(lang, token);
+    dio.options.contentType = Headers.formUrlEncodedContentType;
+    return dio
+        .put(
+      url,
+      data: data,
+    )
+        .catchError((error) {
+      print("DIO ERROR $error");
+    });
+  }
+
+  static Future<Response> deleteData({
+    required String url,
+    Map<String, dynamic>? query,
+    String lang = 'en',
+    String? token,
+  }) async {
+    dio.options.headers = _headers(lang, token);
+    dio.options.contentType = Headers.formUrlEncodedContentType;
+    return dio
+        .delete(
+      url,
+    )
+        .catchError((error) {
+      print("DIO ERROR $error");
+    });
   }
 }

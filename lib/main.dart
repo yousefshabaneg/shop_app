@@ -45,10 +45,7 @@ class MyApp extends StatelessWidget {
           create: (BuildContext context) => LoginCubit(),
         ),
         BlocProvider(
-          create: (BuildContext context) => ShopCubit()
-            ..getHomeData()
-            ..getCategories()
-            ..getFavorites(),
+          create: (BuildContext context) => ShopCubit(),
         ),
       ],
       child: MaterialApp(

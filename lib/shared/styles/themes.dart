@@ -13,6 +13,10 @@ ThemeData lightTheme = ThemeData(
   primarySwatch: MyColors.primaryColor,
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: AppBarTheme(
+    iconTheme: IconThemeData(
+      color: MyColors.primary,
+      size: 25,
+    ),
     backgroundColor: Colors.white,
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarColor: Colors.white,
@@ -45,6 +49,14 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
+  inputDecorationTheme: InputDecorationTheme(
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
+      borderSide: new BorderSide(
+        color: MyColors.primary,
+      ),
+    ),
+  ),
   scaffoldBackgroundColor: MyColors.secondary,
   primarySwatch: MyColors.primaryColor,
   appBarTheme: AppBarTheme(
@@ -58,6 +70,9 @@ ThemeData darkTheme = ThemeData(
       fontWeight: FontWeight.bold,
       color: MyColors.primary,
       fontSize: 20,
+    ),
+    iconTheme: IconThemeData(
+      color: Colors.white.withOpacity(0.7),
     ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -82,5 +97,4 @@ ThemeData darkTheme = ThemeData(
       color: Colors.white.withOpacity(0.9),
     ),
   ),
-  fontFamily: 'Janna',
 );
