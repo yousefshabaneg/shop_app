@@ -42,7 +42,7 @@ class FavoritesScreen extends StatelessWidget {
                           style: TextStyle(
                             fontWeight: FontWeight.w800,
                             fontSize: 20,
-                            color: MyColors.info,
+                            color: MyColors.light,
                           ),
                         ),
                         Padding(
@@ -52,7 +52,7 @@ class FavoritesScreen extends StatelessWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Colors.black54,
+                              color: MyColors.green,
                             ),
                           ),
                         ),
@@ -71,7 +71,9 @@ class FavoritesScreen extends StatelessWidget {
                             .product,
                         context,
                         state),
-                    separatorBuilder: (context, index) => divider(),
+                    separatorBuilder: (context, index) => SizedBox(
+                      height: 10,
+                    ),
                     itemCount: ShopCubit.get(context)
                         .favoritesModel!
                         .data
@@ -79,6 +81,9 @@ class FavoritesScreen extends StatelessWidget {
                         .length,
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
+                  ),
+                  SizedBox(
+                    height: 15,
                   ),
                 ],
               ),
@@ -94,22 +99,30 @@ class FavoritesScreen extends StatelessWidget {
   Widget buildFavoriteProduct(ProductFavModel model, context, state) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      elevation: 6,
+      color: MyColors.card,
+      elevation: 3,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
         child: Column(
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(right: 5.0),
-                  child: Image(
-                    image: NetworkImage(
-                      model.image,
+                  padding: const EdgeInsets.only(right: 15),
+                  child: Container(
+                    width: 130,
+                    height: 130,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    width: 150,
-                    height: 150,
+                    child: Image(
+                      image: NetworkImage(
+                        model.image,
+                      ),
+                    ),
                   ),
                 ),
                 Expanded(
@@ -122,9 +135,10 @@ class FavoritesScreen extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
                           height: 1.5,
                           fontWeight: FontWeight.bold,
+                          color: MyColors.light,
                         ),
                       ),
                       SizedBox(
@@ -170,16 +184,20 @@ class FavoritesScreen extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
+                                  color: MyColors.light,
                                 ),
                               ),
                             ],
                           ),
+                          SizedBox(
+                            width: 10,
+                          ),
                           if (model.discount > 0)
                             Text(
-                              ' ${NumberFormat.currency(decimalDigits: 0, symbol: "").format(model.oldPrice)} LE',
+                              '${NumberFormat.currency(decimalDigits: 0, symbol: "").format(model.oldPrice)} LE',
                               style: TextStyle(
                                 fontSize: 15,
-                                color: MyColors.darkness,
+                                color: MyColors.light.withOpacity(0.6),
                                 decoration: TextDecoration.lineThrough,
                               ),
                             ),
@@ -189,6 +207,9 @@ class FavoritesScreen extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+            SizedBox(
+              height: 10,
             ),
             divider(),
             SizedBox(
@@ -203,13 +224,19 @@ class FavoritesScreen extends StatelessWidget {
                     ? Container(
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
-                            primary: MyColors.info,
+                            primary: MyColors.green,
                           ),
                           onPressed: () {
                             ShopCubit.get(context).changeCartItem(model.id);
                           },
-                          icon: Icon(Icons.add_shopping_cart),
-                          label: Text('Add to cart'),
+                          icon: Icon(
+                            Icons.add_shopping_cart,
+                            color: Colors.white,
+                          ),
+                          label: Text(
+                            'Add to cart',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       )
                     : Row(
@@ -223,11 +250,11 @@ class FavoritesScreen extends StatelessWidget {
                               width: 30,
                               height: 30,
                               decoration: BoxDecoration(
-                                  color: MyColors.info,
+                                  color: MyColors.green,
                                   borderRadius: BorderRadius.circular(5),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black54,
+                                      color: MyColors.primary,
                                       blurRadius: 1,
                                       offset: Offset(1, 1),
                                     )
@@ -247,6 +274,7 @@ class FavoritesScreen extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
+                              color: MyColors.primary,
                             ),
                           ),
                           SizedBox(
@@ -263,11 +291,11 @@ class FavoritesScreen extends StatelessWidget {
                               width: 30,
                               height: 30,
                               decoration: BoxDecoration(
-                                  color: MyColors.info,
+                                  color: MyColors.green,
                                   borderRadius: BorderRadius.circular(5),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black54,
+                                      color: MyColors.primary,
                                       blurRadius: 2,
                                       offset: Offset(1, 1),
                                     )
@@ -316,8 +344,10 @@ class FavoritesScreen extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 50,
+              backgroundColor: MyColors.primaryColor,
               child: Icon(
                 Icons.favorite,
+                color: MyColors.secondary,
                 size: 60,
               ),
             ),
@@ -325,18 +355,26 @@ class FavoritesScreen extends StatelessWidget {
               height: 20,
             ),
             Text(
-              'There are no products saved yet',
+              'You haven\'t saved anything',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: MyColors.primary,
               ),
             ),
+            Text(
+              'Please add a few items',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: MyColors.light,
+              ),
+            ),
             SizedBox(
               height: 20,
             ),
             defaultButton(
-              text: 'Start Shopping Now',
+              text: 'Continue browsing',
               onPressed: () {
                 ShopCubit.get(context).changeBottomNav(0);
               },

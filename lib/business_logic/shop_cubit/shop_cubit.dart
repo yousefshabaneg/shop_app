@@ -35,11 +35,11 @@ class ShopCubit extends Cubit<ShopStates> {
     SettingsScreen(),
   ];
 
-  List<BottomNavigationBarItem> bottomItems = [
-    BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-    BottomNavigationBarItem(icon: Icon(Icons.apps), label: 'Categories'),
-    BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorites'),
-    BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+  List<Widget> bottomItems = [
+    Icon(Icons.home),
+    Icon(Icons.apps),
+    Icon(Icons.favorite),
+    Icon(Icons.settings),
   ];
 
   void changeBottomNav(int index) {

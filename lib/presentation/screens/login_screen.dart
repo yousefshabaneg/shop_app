@@ -67,7 +67,7 @@ class LoginScreen extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
-                          color: MyColors.darkness,
+                          color: MyColors.light,
                         ),
                       ),
                       SizedBox(
@@ -151,7 +151,7 @@ class LoginScreen extends StatelessWidget {
                         height: 20,
                       ),
                       Divider(
-                        color: MyColors.black,
+                        color: MyColors.dark,
                         height: 30,
                         thickness: 0.4,
                       ),

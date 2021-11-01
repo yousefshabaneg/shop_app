@@ -69,7 +69,7 @@ class RegisterScreen extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
-                          color: MyColors.darkness,
+                          color: MyColors.light,
                         ),
                       ),
                       SizedBox(
@@ -155,7 +155,7 @@ class RegisterScreen extends StatelessWidget {
                         fallback: (context) => buildProgressIndicator(),
                       ),
                       Divider(
-                        color: MyColors.black,
+                        color: MyColors.dark,
                         height: 30,
                         thickness: 0.4,
                       ),

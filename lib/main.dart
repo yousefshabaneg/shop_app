@@ -52,6 +52,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: lightTheme,
         darkTheme: darkTheme,
+        themeMode: ThemeMode.dark,
         home: widget,
         builder: BotToastInit(),
         navigatorObservers: [BotToastNavigatorObserver()],

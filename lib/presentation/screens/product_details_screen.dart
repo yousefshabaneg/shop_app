@@ -54,7 +54,7 @@ class ProductDetailsScreen extends StatelessWidget {
                             height: 40,
                             child: ElevatedButton.icon(
                               style: ElevatedButton.styleFrom(
-                                primary: MyColors.info,
+                                primary: MyColors.secondary,
                               ),
                               onPressed: () {
                                 ShopCubit.get(context)
@@ -65,6 +65,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                 'Add to cart',
                                 style: TextStyle(
                                   fontSize: 18,
+                                  color: MyColors.light,
                                 ),
                               ),
                             ),
@@ -80,7 +81,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                   width: 30,
                                   height: 30,
                                   decoration: BoxDecoration(
-                                      color: MyColors.info,
+                                      color: MyColors.light,
                                       borderRadius: BorderRadius.circular(5),
                                       boxShadow: [
                                         BoxShadow(
@@ -120,7 +121,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                   width: 30,
                                   height: 30,
                                   decoration: BoxDecoration(
-                                      color: MyColors.info,
+                                      color: MyColors.dark,
                                       borderRadius: BorderRadius.circular(5),
                                       boxShadow: [
                                         BoxShadow(
@@ -308,7 +309,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         ' ${NumberFormat.currency(decimalDigits: 0, symbol: "").format(model.oldPrice)} LE',
                         style: TextStyle(
                           fontSize: 18,
-                          color: MyColors.darkness,
+                          color: MyColors.dark,
                           decoration: TextDecoration.lineThrough,
                         ),
                       ),

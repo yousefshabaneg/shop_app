@@ -36,22 +36,11 @@ class CartScreen extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 30,
-                    color: MyColors.info,
+                    color: MyColors.secondary,
                   ),
                 ),
                 SizedBox(
                   width: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 3.0),
-                  child: Text(
-                    '( ${ShopCubit.get(context).totalCarts} Items)',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 16,
-                      color: Colors.deepOrangeAccent,
-                    ),
-                  ),
                 ),
                 Spacer(),
                 if (state is ShopChangeCartItemState) buildProgressIndicator(),
@@ -65,54 +54,95 @@ class CartScreen extends StatelessWidget {
                 Navigator.of(context).pop();
               },
             ),
-          ),
-          body: Stack(
-            children: [
-              SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 15.0),
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                        itemBuilder: (context, index) => buildInCartProduct(
-                            ShopCubit.get(context)
-                                .cartModel!
-                                .data
-                                .cartItems[index],
-                            ShopCubit.get(context).cartModel!.data.total,
-                            context,
-                            state),
-                        itemCount: ShopCubit.get(context)
-                            .cartModel!
-                            .data
-                            .cartItems
-                            .length,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                      ),
-                      SizedBox(
-                        height: 25,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              if (ShopCubit.get(context).totalCarts > 0)
-                Align(
-                  alignment: Alignment(0, 1),
-                  child: Container(
-                    width: double.infinity,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.grey.shade300,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          width: 35,
+                          height: 35,
+                          decoration: BoxDecoration(
+                            color: MyColors.card,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        Text(
+                          '${ShopCubit.get(context).totalCarts}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 20,
+                            color: MyColors.light,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Items',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 18,
+                        color: MyColors.secondary,
                       ),
                     ),
-                    child: ConditionalBuilder(
-                      condition: ShopCubit.get(context).addressId != 0,
-                      builder: (context) => BottomAppBar(
-                        child: Container(
+                  ],
+                ),
+              ),
+            ],
+          ),
+          body: ConditionalBuilder(
+            condition: ShopCubit.get(context).totalCarts > 0,
+            builder: (context) => Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15.0),
+                    child: Column(
+                      children: [
+                        ListView.builder(
+                          itemBuilder: (context, index) => buildInCartProduct(
+                              ShopCubit.get(context)
+                                  .cartModel!
+                                  .data
+                                  .cartItems[index],
+                              ShopCubit.get(context).cartModel!.data.total,
+                              context,
+                              state),
+                          itemCount: ShopCubit.get(context)
+                              .cartModel!
+                              .data
+                              .cartItems
+                              .length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                if (ShopCubit.get(context).totalCarts > 0)
+                  Align(
+                    alignment: Alignment(0, 1),
+                    child: Container(
+                      width: double.infinity,
+                      height: 70,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      child: ConditionalBuilder(
+                        condition: ShopCubit.get(context).addressId != 0,
+                        builder: (context) => Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
                           child: state is! AddOrderLoadingState
@@ -122,32 +152,31 @@ class CartScreen extends StatelessWidget {
                                   onPressed: () {
                                     ShopCubit.get(context).addNewOrder();
                                   },
-                                  fontSize: 20,
-                                  radius: 30,
-                                  background: Color(0xff003FFF),
+                                  fontSize: 18,
+                                  radius: 15,
+                                  background: MyColors.green,
                                 )
                               : buildProgressIndicator(),
                         ),
-                      ),
-                      fallback: (context) => BottomAppBar(
-                        child: Container(
+                        fallback: (context) => Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 25, vertical: 10),
+                              horizontal: 10, vertical: 10),
                           child: defaultButton(
                             text: 'Add your address to continue checkout.',
                             onPressed: () {
                               navigateTo(context, AddressScreen());
                             },
                             fontSize: 14,
-                            radius: 30,
-                            background: Color(0xff003FFF),
+                            radius: 15,
+                            background: MyColors.green,
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
+            fallback: (context) => buildNoCartItems(context),
           ),
         );
       },
@@ -157,7 +186,8 @@ class CartScreen extends StatelessWidget {
   Widget buildInCartProduct(CartItem model, total, context, state) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      elevation: 6,
+      color: MyColors.card,
+      elevation: 3,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
         child: Column(
@@ -166,13 +196,20 @@ class CartScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(right: 5.0),
-                  child: Image(
-                    image: NetworkImage(
-                      model.product.image,
+                  padding: const EdgeInsets.only(right: 15),
+                  child: Container(
+                    width: 130,
+                    height: 130,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    width: 150,
-                    height: 150,
+                    child: Image(
+                      image: NetworkImage(
+                        model.product.image,
+                      ),
+                    ),
                   ),
                 ),
                 Expanded(
@@ -185,9 +222,10 @@ class CartScreen extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
                           height: 1.5,
                           fontWeight: FontWeight.bold,
+                          color: MyColors.light,
                         ),
                       ),
                       SizedBox(
@@ -233,16 +271,20 @@ class CartScreen extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
+                                  color: MyColors.light,
                                 ),
                               ),
                             ],
                           ),
+                          SizedBox(
+                            width: 10,
+                          ),
                           if (model.product.discount > 0)
                             Text(
-                              ' ${NumberFormat.currency(decimalDigits: 0, symbol: "").format(model.product.oldPrice)} LE',
+                              '${NumberFormat.currency(decimalDigits: 0, symbol: "").format(model.product.oldPrice)} LE',
                               style: TextStyle(
                                 fontSize: 15,
-                                color: MyColors.darkness,
+                                color: MyColors.light.withOpacity(0.6),
                                 decoration: TextDecoration.lineThrough,
                               ),
                             ),
@@ -252,6 +294,9 @@ class CartScreen extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+            SizedBox(
+              height: 10,
             ),
             divider(),
             SizedBox(
@@ -273,11 +318,11 @@ class CartScreen extends StatelessWidget {
                         width: 30,
                         height: 30,
                         decoration: BoxDecoration(
-                            color: MyColors.info,
+                            color: MyColors.green,
                             borderRadius: BorderRadius.circular(5),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black54,
+                                color: MyColors.primary,
                                 blurRadius: 1,
                                 offset: Offset(1, 1),
                               )
@@ -297,6 +342,7 @@ class CartScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
+                        color: MyColors.primary,
                       ),
                     ),
                     SizedBox(
@@ -323,12 +369,12 @@ class CartScreen extends StatelessWidget {
                                     ShopCubit.get(context).productsQuantity[
                                             model.product.id] ==
                                         null
-                                ? MyColors.darkness
-                                : MyColors.info,
+                                ? MyColors.card
+                                : MyColors.green,
                             borderRadius: BorderRadius.circular(5),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black54,
+                                color: MyColors.primary,
                                 blurRadius: 2,
                                 offset: Offset(1, 1),
                               )
@@ -349,11 +395,13 @@ class CartScreen extends StatelessWidget {
                   },
                   icon: CircleAvatar(
                     radius: 15,
+                    backgroundColor: MyColors.primary,
                     child: Icon(
                       ShopCubit.get(context).favorites[model.product.id]!
                           ? Icons.favorite
                           : Icons.favorite_border_outlined,
                       size: 18,
+                      color: MyColors.dark,
                     ),
                   ),
                 ),
@@ -387,9 +435,11 @@ class CartScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
+              backgroundColor: MyColors.primaryColor,
               radius: 50,
               child: Icon(
                 Icons.shopping_cart_sharp,
+                color: MyColors.secondary,
                 size: 60,
               ),
             ),
@@ -397,18 +447,26 @@ class CartScreen extends StatelessWidget {
               height: 20,
             ),
             Text(
-              'There are no products in your Cart',
+              'Your cart is empty!',
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: MyColors.primary,
               ),
             ),
+            Text(
+              'Please add a few items',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: MyColors.light,
+              ),
+            ),
             SizedBox(
               height: 20,
             ),
             defaultButton(
-              text: 'Continue Shopping',
+              text: 'Continue browsing',
               onPressed: () {
                 ShopCubit.get(context).changeBottomNav(0);
                 Navigator.pop(context);

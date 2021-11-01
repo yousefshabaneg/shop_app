@@ -143,7 +143,7 @@ Color toastColor(ToastStates state) {
 //     );
 
 Widget divider() => Divider(
-      color: Colors.black54,
+      color: MyColors.grey,
       height: 20,
       thickness: 0.5,
       indent: 0,
@@ -176,7 +176,7 @@ Widget buildIconWithNumber({
             if (condition)
               CircleAvatar(
                 radius: radius,
-                backgroundColor: Color(0xffFE750B),
+                backgroundColor: MyColors.secondary,
                 child: Text(
                   number.toString(),
                   style: TextStyle(

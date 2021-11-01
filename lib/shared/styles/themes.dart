@@ -14,7 +14,7 @@ ThemeData lightTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: AppBarTheme(
     iconTheme: IconThemeData(
-      color: MyColors.primary,
+      color: Colors.white,
       size: 25,
     ),
     backgroundColor: Colors.white,
@@ -49,38 +49,38 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
-  inputDecorationTheme: InputDecorationTheme(
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20),
-      borderSide: new BorderSide(
-        color: MyColors.primary,
-      ),
+  textTheme: TextTheme(
+    button: TextStyle(
+      color: MyColors.light,
+      fontWeight: FontWeight.bold,
     ),
   ),
-  scaffoldBackgroundColor: MyColors.secondary,
   primarySwatch: MyColors.primaryColor,
+  scaffoldBackgroundColor: MyColors.secondary,
   appBarTheme: AppBarTheme(
-    backgroundColor: MyColors.secondary,
-    systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarColor: MyColors.secondary,
-      statusBarIconBrightness: Brightness.light,
-    ),
-    elevation: 0,
-    titleTextStyle: TextStyle(
-      fontWeight: FontWeight.bold,
-      color: MyColors.primary,
-      fontSize: 20,
-    ),
+    color: MyColors.primary,
     iconTheme: IconThemeData(
-      color: Colors.white.withOpacity(0.7),
+      color: MyColors.secondary,
+      size: 25,
+    ),
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarColor: MyColors.primary,
+      statusBarIconBrightness: Brightness.dark,
+    ),
+    elevation: 3,
+    titleTextStyle: TextStyle(
+      fontSize: 24,
+      fontFamily: 'Cairo',
+      fontWeight: FontWeight.bold,
+      color: MyColors.secondary,
     ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
     selectedItemColor: MyColors.primary,
-    unselectedItemColor: Colors.white.withOpacity(0.6),
+    unselectedItemColor: MyColors.dark,
     elevation: 20,
-    backgroundColor: MyColors.secondary,
+    backgroundColor: Colors.white,
     selectedLabelStyle: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
@@ -90,11 +90,5 @@ ThemeData darkTheme = ThemeData(
       fontWeight: FontWeight.w600,
     ),
   ),
-  textTheme: TextTheme(
-    bodyText1: TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.bold,
-      color: Colors.white.withOpacity(0.9),
-    ),
-  ),
+  fontFamily: 'Janna',
 );

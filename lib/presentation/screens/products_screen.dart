@@ -10,10 +10,15 @@ import 'package:shop_app/data/models/shop_app/categories_model.dart';
 import 'package:shop_app/data/models/shop_app/home_model.dart';
 import 'package:shop_app/presentation/screens/product_details_screen.dart';
 import 'package:shop_app/shared/components/components.dart';
-import 'package:shop_app/shared/constants/constants.dart';
 import 'package:shop_app/shared/constants/my_colors.dart';
 
 class ProductsScreen extends StatelessWidget {
+  var images = [
+    "assets/images/banners/1.jpg",
+    "assets/images/banners/2.jpg",
+    "assets/images/banners/3.jpg",
+    "assets/images/banners/4.jpg",
+  ];
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShopCubit, ShopStates>(
@@ -48,12 +53,14 @@ class ProductsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CarouselSlider(
-              items: homeModel.data.banners
-                  .map((banner) => Image(
-                        image: NetworkImage(banner.image),
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ))
+              items: images
+                  .map(
+                    (banner) => Image(
+                      image: AssetImage(banner),
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  )
                   .toList(),
               options: CarouselOptions(
                 height: 230,
@@ -76,7 +83,7 @@ class ProductsScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
-                      color: MyColors.secondary,
+                      color: MyColors.light,
                     ),
                   ),
                   SizedBox(
@@ -84,15 +91,18 @@ class ProductsScreen extends StatelessWidget {
                   ),
                   Container(
                     height: 110,
-                    child: ListView.separated(
-                      physics: BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) => buildCategories(
-                          categoriesModel.data.categoriesList[index]),
-                      separatorBuilder: (context, index) => SizedBox(
-                        width: 5,
+                    child: Scrollbar(
+                      thickness: 1,
+                      child: ListView.separated(
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) => buildCategories(
+                            categoriesModel.data.categoriesList[index]),
+                        separatorBuilder: (context, index) => SizedBox(
+                          width: 5,
+                        ),
+                        itemCount: categoriesModel.data.categoriesList.length,
                       ),
-                      itemCount: categoriesModel.data.categoriesList.length,
                     ),
                   ),
                   SizedBox(
@@ -103,7 +113,7 @@ class ProductsScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
-                      color: MyColors.secondary,
+                      color: MyColors.light,
                     ),
                   ),
                 ],
@@ -122,6 +132,9 @@ class ProductsScreen extends StatelessWidget {
                     buildGridProduct(homeModel.data.products[index], context),
               ),
             ),
+            SizedBox(
+              height: 25,
+            ),
           ],
         ),
       );
@@ -135,9 +148,11 @@ class ProductsScreen extends StatelessWidget {
               height: 80.0,
               decoration: new BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: MyColors.info, width: 2),
+                border: Border.all(color: MyColors.primary, width: 2),
                 image: new DecorationImage(
-                  image: NetworkImage(model.image),
+                  image: NetworkImage(
+                    model.image,
+                  ),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -150,6 +165,7 @@ class ProductsScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontSize: 13,
                 fontFamily: 'Cairo',
+                color: MyColors.light,
               ),
               textAlign: TextAlign.center,
             )
@@ -170,7 +186,7 @@ class ProductsScreen extends StatelessWidget {
                 letterSpacing: 0.5,
               ),
               location: BannerLocation.topEnd,
-              color: Colors.red,
+              color: MyColors.red,
               child: Container(
                 height: 100,
               ),
@@ -181,7 +197,8 @@ class ProductsScreen extends StatelessWidget {
 
   Widget buildGridProduct(ProductModel product, context) => Container(
         child: Card(
-          elevation: 6,
+          color: MyColors.card,
+          elevation: 3,
           margin: EdgeInsets.all(4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,9 +214,14 @@ class ProductsScreen extends StatelessWidget {
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Image(
-                        image: NetworkImage(product.image),
-                        height: 180,
+                      child: Container(
+                        width: double.infinity,
+                        color: Colors.white,
+                        child: Image(
+                          image: NetworkImage(product.image),
+                          // fit: BoxFit.cover,
+                          height: 180,
+                        ),
                       ),
                     ),
                   ),
@@ -209,10 +231,12 @@ class ProductsScreen extends StatelessWidget {
                     },
                     icon: CircleAvatar(
                       radius: 15,
+                      backgroundColor: MyColors.primaryColor,
                       child: Icon(
                         ShopCubit.get(context).favorites[product.id]!
                             ? Icons.favorite
                             : Icons.favorite_border_outlined,
+                        color: MyColors.dark,
                         size: 18,
                       ),
                     ),
@@ -232,6 +256,7 @@ class ProductsScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 15,
                         height: 1.4,
+                        color: MyColors.light,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -244,7 +269,7 @@ class ProductsScreen extends StatelessWidget {
                           Text(
                             'Save ${NumberFormat.currency(decimalDigits: 0, symbol: "").format(product.oldPrice - product.price)} (${product.discount}%)',
                             style: TextStyle(
-                              color: Colors.redAccent,
+                              color: MyColors.red,
                               fontSize: 14,
                               fontWeight: FontWeight.w900,
                               letterSpacing: 0.5,
@@ -275,10 +300,11 @@ class ProductsScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          ' LE',
+                          ' LE  ',
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
+                            color: MyColors.light,
                           ),
                         ),
                       ],
@@ -288,7 +314,7 @@ class ProductsScreen extends StatelessWidget {
                         ' ${NumberFormat.currency(decimalDigits: 0, symbol: "").format(product.oldPrice)} LE',
                         style: TextStyle(
                           fontSize: 15,
-                          color: MyColors.darkness,
+                          color: MyColors.light.withOpacity(0.6),
                           decoration: TextDecoration.lineThrough,
                         ),
                       ),
@@ -306,13 +332,21 @@ class ProductsScreen extends StatelessWidget {
                         ),
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
-                            primary: MyColors.info,
+                            primary: MyColors.green,
                           ),
                           onPressed: () {
                             ShopCubit.get(context).changeCartItem(product.id);
                           },
-                          icon: Icon(Icons.add_shopping_cart),
-                          label: Text('Add to cart'),
+                          icon: Icon(
+                            Icons.add_shopping_cart,
+                            color: Colors.white,
+                          ),
+                          label: Text(
+                            'Add to cart',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       )
                     : Container(
@@ -331,11 +365,11 @@ class ProductsScreen extends StatelessWidget {
                                   width: 30,
                                   height: 30,
                                   decoration: BoxDecoration(
-                                      color: MyColors.info,
+                                      color: MyColors.green,
                                       borderRadius: BorderRadius.circular(5),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.black54,
+                                          color: MyColors.primary,
                                           blurRadius: 1,
                                           offset: Offset(1, 1),
                                         )
@@ -355,6 +389,7 @@ class ProductsScreen extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
+                                color: MyColors.primary,
                               ),
                             ),
                             Padding(
@@ -370,11 +405,11 @@ class ProductsScreen extends StatelessWidget {
                                   width: 30,
                                   height: 30,
                                   decoration: BoxDecoration(
-                                      color: MyColors.info,
+                                      color: MyColors.green,
                                       borderRadius: BorderRadius.circular(5),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.black54,
+                                          color: MyColors.primary,
                                           blurRadius: 2,
                                           offset: Offset(1, 1),
                                         )
