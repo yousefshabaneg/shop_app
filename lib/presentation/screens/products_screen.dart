@@ -123,8 +123,8 @@ class ProductsScreen extends StatelessWidget {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 5,
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 15,
               childAspectRatio: 1 / 1.97,
               children: List.generate(
                 homeModel.data.products.length,
@@ -322,32 +322,18 @@ class ProductsScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(5.0),
+                padding: const EdgeInsets.all(10.0),
                 child: ShopCubit.get(context).productsQuantity[product.id] ==
                         null
-                    ? Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(52),
-                        ),
-                        child: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            primary: MyColors.green,
-                          ),
-                          onPressed: () {
-                            ShopCubit.get(context).changeCartItem(product.id);
-                          },
-                          icon: Icon(
-                            Icons.add_shopping_cart,
-                            color: Colors.white,
-                          ),
-                          label: Text(
-                            'Add to cart',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                    ? primaryButton(
+                        text: "Add To Cart",
+                        onPressed: () {
+                          ShopCubit.get(context).changeCartItem(product.id);
+                        },
+                        height: 35,
+                        radius: 15,
+                        fontSize: 18,
+                        isUpperCase: false,
                       )
                     : Container(
                         width: double.infinity,

@@ -51,7 +51,8 @@ class SettingsScreen extends StatelessWidget {
                                 width: 2,
                               ),
                               image: DecorationImage(
-                                image: AssetImage(''),
+                                image: AssetImage('assets/images/1.jpg'),
+                              ),
                             ),
                           ),
                         ),
@@ -126,7 +127,7 @@ class SettingsScreen extends StatelessWidget {
                                     Icon(
                                       Icons.view_list,
                                       size: 25,
-                                      color: MyColors.green,
+                                      color: MyColors.red,
                                     ),
                                     SizedBox(
                                       width: 35,
@@ -140,7 +141,7 @@ class SettingsScreen extends StatelessWidget {
                                     ),
                                     Spacer(),
                                     Text(
-                                      "Total (${ShopCubit.get(context).orderModel!.data.data.length})",
+                                      "Total (${ShopCubit.get(context).ordersDetails.length})",
                                       style: TextStyle(
                                         color: MyColors.primaryColor
                                             .withOpacity(0.6),
@@ -159,7 +160,7 @@ class SettingsScreen extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                ShopCubit.get(context).currentIndex = 2;
+                                ShopCubit.get(context).changeBottomNav(2);
                               },
                               child: Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
@@ -169,7 +170,7 @@ class SettingsScreen extends StatelessWidget {
                                     Icon(
                                       Icons.favorite,
                                       size: 25,
-                                      color: MyColors.green,
+                                      color: MyColors.red,
                                     ),
                                     SizedBox(
                                       width: 35,
@@ -251,7 +252,7 @@ class SettingsScreen extends StatelessWidget {
             Icon(
               icon,
               size: 25,
-              color: MyColors.green,
+              color: MyColors.red,
             ),
             SizedBox(
               width: 35,

@@ -2,13 +2,10 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:shop_app/business_logic/login_cubit/login_cubit.dart';
-import 'package:shop_app/business_logic/login_cubit/login_states.dart';
 import 'package:shop_app/business_logic/shop_cubit/shop_cubit.dart';
 import 'package:shop_app/business_logic/shop_cubit/shop_states.dart';
 import 'package:shop_app/data/models/shop_app/order_model.dart';
 import 'package:shop_app/shared/components/components.dart';
-import 'package:shop_app/shared/constants/constants.dart';
 import 'package:shop_app/shared/constants/my_colors.dart';
 
 class MyOrdersScreen extends StatelessWidget {
@@ -18,7 +15,10 @@ class MyOrdersScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            leadingWidth: 130,
+            leading: backButton(context),
+          ),
           body: ConditionalBuilder(
             condition: ShopCubit.get(context).orderModel!.data.data.length > 0,
             builder: (context) => ConditionalBuilder(
@@ -27,7 +27,8 @@ class MyOrdersScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 10),
                       child: Row(
                         children: [
                           Text(
@@ -41,11 +42,11 @@ class MyOrdersScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsetsDirectional.only(top: 3.0),
                             child: Text(
-                              '( ${ShopCubit.get(context).orderModel!.data.data.length.toString()} orders )',
+                              '( ${ShopCubit.get(context).ordersDetails.length.toString()} orders )',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
-                                color: Colors.black54,
+                                color: MyColors.green,
                               ),
                             ),
                           ),
@@ -81,7 +82,10 @@ class MyOrdersScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
         child: Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
+            color: MyColors.card,
+            border: Border.all(
+              color: MyColors.grey,
+            ),
             borderRadius: BorderRadius.circular(25),
           ),
           child: Padding(
@@ -91,24 +95,42 @@ class MyOrdersScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Order ID: ${model.id}",
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          "Order ID:",
+                          style: TextStyle(
+                            color: MyColors.light,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          model.id.toString(),
+                          style: TextStyle(
+                            color: MyColors.yellow,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
                     ),
                     Text(
                       model.date,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.black38,
+                        color: MyColors.light.withOpacity(0.6),
                         fontFamily: "Cairo",
                         fontSize: 14,
                       ),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 6,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -118,9 +140,9 @@ class MyOrdersScreen extends StatelessWidget {
                         Text(
                           "Cost : ",
                           style: TextStyle(
-                            color: Colors.black54,
+                            color: MyColors.light,
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 18,
                           ),
                         ),
                         Text(
@@ -129,7 +151,7 @@ class MyOrdersScreen extends StatelessWidget {
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             fontFamily: "Cairo",
-                            color: MyColors.light,
+                            color: MyColors.yellow,
                           ),
                         ),
                       ],
@@ -139,9 +161,9 @@ class MyOrdersScreen extends StatelessWidget {
                         Text(
                           "VAT : ",
                           style: TextStyle(
-                            color: Colors.black54,
+                            color: MyColors.light,
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 18,
                           ),
                         ),
                         Text(
@@ -150,21 +172,24 @@ class MyOrdersScreen extends StatelessWidget {
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             fontFamily: "Cairo",
-                            color: MyColors.light,
+                            color: MyColors.yellow,
                           ),
                         ),
                       ],
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 6,
+                ),
                 Row(
                   children: [
                     Text(
                       "Total Amount : ",
                       style: TextStyle(
-                        color: Colors.black54,
+                        color: MyColors.light,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 18,
                       ),
                     ),
                     Text(
@@ -173,10 +198,13 @@ class MyOrdersScreen extends StatelessWidget {
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         fontFamily: "Cairo",
-                        color: MyColors.light,
+                        color: MyColors.yellow,
                       ),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 6,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -184,20 +212,17 @@ class MyOrdersScreen extends StatelessWidget {
                     Text(
                       model.status,
                       style: TextStyle(
-                        color: Colors.green,
+                        color: MyColors.green,
                         fontFamily: "Cairo",
                         fontWeight: FontWeight.w900,
                         fontSize: 20,
                       ),
                     ),
-                    defaultButton(
+                    primaryButton(
                       text: "Cancel",
-                      fontSize: 12,
-                      radius: 20,
-                      background: MyColors.primary,
                       onPressed: () {},
                       width: 100,
-                      height: 35,
+                      height: 30,
                     ),
                   ],
                 ),
@@ -212,36 +237,50 @@ class MyOrdersScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
+              backgroundColor: MyColors.primaryColor,
               radius: 50,
               child: Icon(
                 Icons.list_alt_outlined,
                 size: 60,
+                color: MyColors.secondary,
               ),
             ),
             SizedBox(
               height: 20,
             ),
             Text(
-              'There are no orders associated with your account',
+              'You have no orders in progress!',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: MyColors.primary,
               ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              'All your orders will be saved here for you to access their state anytime',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: MyColors.light.withOpacity(0.8),
+              ),
+              textAlign: TextAlign.center,
             ),
             SizedBox(
               height: 20,
             ),
-            defaultButton(
-              text: 'Start Shopping Now',
-              onPressed: () {
-                ShopCubit.get(context).changeBottomNav(0);
-              },
-              fontSize: 18,
-              width: 250,
-              radius: 20,
-              background: MyColors.primary,
-            )
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: primaryButton(
+                  text: "Start Shopping",
+                  onPressed: () {
+                    ShopCubit.get(context).changeBottomNav(0);
+                    Navigator.pop(context);
+                  }),
+            ),
           ],
         ),
       );

@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/business_logic/login_cubit/login_cubit.dart';
 import 'package:shop_app/business_logic/login_cubit/login_states.dart';
-import 'package:shop_app/business_logic/shop_cubit/shop_cubit.dart';
-import 'package:shop_app/business_logic/shop_cubit/shop_states.dart';
 import 'package:shop_app/shared/components/components.dart';
-import 'package:shop_app/shared/constants/my_colors.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
@@ -59,7 +56,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           : null;
                     },
                     prefixIcon: Icons.lock_outlined,
-                    label: 'Current Password',
+                    hint: 'Current Password',
                     isPassword: LoginCubit.get(context).isPassword,
                     suffixIcon: LoginCubit.get(context).suffix,
                     suffixPressed: () {
@@ -82,7 +79,7 @@ class ChangePasswordScreen extends StatelessWidget {
                       return null;
                     },
                     prefixIcon: Icons.lock_outlined,
-                    label: 'New Password',
+                    hint: 'New Password',
                     isPassword: LoginCubit.get(context).isPassword,
                     suffixIcon: LoginCubit.get(context).suffix,
                     suffixPressed: () {
@@ -105,7 +102,7 @@ class ChangePasswordScreen extends StatelessWidget {
                       return null;
                     },
                     prefixIcon: Icons.lock_outlined,
-                    label: 'Confirm Password',
+                    hint: 'Confirm Password',
                     isPassword: LoginCubit.get(context).isPassword,
                     suffixIcon: LoginCubit.get(context).suffix,
                     suffixPressed: () {
@@ -117,11 +114,8 @@ class ChangePasswordScreen extends StatelessWidget {
                   ),
                   ConditionalBuilder(
                     condition: state is! ChangePasswordLoadingState,
-                    builder: (context) => defaultButton(
-                      width: 350,
-                      height: 50,
-                      text: 'Change Password',
-                      isUpperCase: true,
+                    builder: (context) => primaryButton(
+                      text: "Change Password",
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
                           LoginCubit.get(context).changePassword(
@@ -130,8 +124,6 @@ class ChangePasswordScreen extends StatelessWidget {
                           );
                         }
                       },
-                      radius: 20,
-                      background: MyColors.primary,
                     ),
                     fallback: (context) => buildProgressIndicator(),
                   )

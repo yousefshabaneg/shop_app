@@ -6,8 +6,6 @@ import 'package:shop_app/business_logic/login_cubit/login_states.dart';
 import 'package:shop_app/business_logic/shop_cubit/shop_cubit.dart';
 import 'package:shop_app/business_logic/shop_cubit/shop_states.dart';
 import 'package:shop_app/shared/components/components.dart';
-import 'package:shop_app/shared/constants/constants.dart';
-import 'package:shop_app/shared/constants/my_colors.dart';
 
 class MyAccountScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
@@ -62,7 +60,7 @@ class MyAccountScreen extends StatelessWidget {
                     controller: nameController,
                     keyboardType: TextInputType.name,
                     prefixIcon: Icons.account_circle,
-                    label: 'Name',
+                    hint: 'Name',
                   ),
                   SizedBox(
                     height: 25,
@@ -76,7 +74,7 @@ class MyAccountScreen extends StatelessWidget {
                           : null;
                     },
                     prefixIcon: Icons.email_outlined,
-                    label: 'Email Address',
+                    hint: 'Email Address',
                   ),
                   SizedBox(
                     height: 25,
@@ -93,28 +91,23 @@ class MyAccountScreen extends StatelessWidget {
                       return null;
                     },
                     prefixIcon: Icons.phone_android_outlined,
-                    label: 'Phone',
+                    hint: 'Phone',
                   ),
                   SizedBox(
                     height: 25,
                   ),
                   ConditionalBuilder(
                     condition: state is! UpdateProfileLoadingState,
-                    builder: (context) => defaultButton(
-                      width: 350,
-                      height: 50,
-                      text: 'Update Profile',
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          ShopCubit.get(context).updateProfile(
-                              name: nameController.text,
-                              email: emailController.text,
-                              phone: phoneController.text);
-                        }
-                      },
-                      radius: 20,
-                      background: MyColors.primary,
-                    ),
+                    builder: (context) => primaryButton(
+                        text: "Update Profile",
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            ShopCubit.get(context).updateProfile(
+                                name: nameController.text,
+                                email: emailController.text,
+                                phone: phoneController.text);
+                          }
+                        }),
                     fallback: (context) => buildProgressIndicator(),
                   ),
                   SizedBox(
@@ -122,17 +115,11 @@ class MyAccountScreen extends StatelessWidget {
                   ),
                   ConditionalBuilder(
                     condition: state is! LogoutLoadingState,
-                    builder: (context) => defaultButton(
-                      width: 350,
-                      height: 50,
-                      text: 'Logout',
-                      onPressed: () {
-                        signOut(context);
-                        LoginCubit.get(context).userLogout();
-                      },
-                      radius: 20,
-                      background: MyColors.primary,
-                    ),
+                    builder: (context) => primaryButton(
+                        text: "Logout",
+                        onPressed: () {
+                          LoginCubit.get(context).userLogout();
+                        }),
                     fallback: (context) => buildProgressIndicator(),
                   ),
                 ],

@@ -1,51 +1,13 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:shop_app/presentation/screens/login_screen.dart';
+import 'package:gradients/gradients.dart';
 import 'package:shop_app/shared/constants/my_colors.dart';
 
 Widget dividerSeparator() => Divider(
       thickness: 0.3,
       color: MyColors.dark,
     );
-
-//<editor-fold desc='Default Button'>
-Widget defaultButton({
-  required String text,
-  required VoidCallback onPressed,
-  double height = 60,
-  double width = double.infinity,
-  Color background = Colors.red,
-  Color textColor = Colors.white,
-  double radius = 0.0,
-  bool isUpperCase = true,
-  double fontSize = 18,
-  border,
-}) =>
-    Container(
-      width: width,
-      height: height,
-      child: MaterialButton(
-        onPressed: onPressed,
-        height: height,
-        child: Text(
-          isUpperCase ? text.toUpperCase() : text,
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.bold,
-            fontSize: fontSize,
-          ),
-        ),
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(radius),
-        border: border,
-        color: background,
-      ),
-    );
-//</editor-fold>
 
 //<editor-fold desc='Default FormField'>
 Widget defaultFormField({
@@ -58,7 +20,7 @@ Widget defaultFormField({
   Function(String?)? onChanged,
   required IconData prefixIcon,
   double borderRadius = 20,
-  required String label,
+  required String hint,
   IconData? suffixIcon,
   bool isPassword = false,
   // required bool isRtl,
@@ -68,19 +30,17 @@ Widget defaultFormField({
       keyboardType: keyboardType,
       obscureText: isPassword,
       decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: new BorderSide(color: Colors.blue),
-        ),
+        hintText: hint,
         prefixIcon: Icon(
           prefixIcon,
+          color: MyColors.light.withOpacity(0.8),
         ),
         suffixIcon: suffixIcon != null
             ? IconButton(
                 onPressed: suffixPressed,
                 icon: Icon(
                   suffixIcon,
+                  color: MyColors.light.withOpacity(0.8),
                 ),
               )
             : null,
@@ -89,10 +49,14 @@ Widget defaultFormField({
       onChanged: onChanged,
       onTap: onTap,
       onFieldSubmitted: onSubmit,
+      style: TextStyle(color: MyColors.light, letterSpacing: 1),
     );
 //</editor-fold>
 
-Widget buildProgressIndicator() => Center(child: CircularProgressIndicator());
+Widget buildProgressIndicator() => Center(
+        child: CircularProgressIndicator(
+      color: MyColors.primaryColor,
+    ));
 
 void navigateTo(context, widget) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
@@ -141,6 +105,49 @@ Color toastColor(ToastStates state) {
 //         color: Colors.grey[300],
 //       ),
 //     );
+
+Widget primaryButton({
+  required String text,
+  required VoidCallback onPressed,
+  double height = 60,
+  double width = double.infinity,
+  Color? background,
+  Color? textColor,
+  double radius = 30,
+  bool isUpperCase = true,
+  double fontSize = 18,
+  colors,
+}) =>
+    Container(
+      width: width,
+      height: height,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      decoration: BoxDecoration(
+        color: MyColors.primary,
+        borderRadius: BorderRadius.circular(radius),
+        gradient: LinearGradientPainter(
+          colorSpace: ColorSpace.oklab,
+          colors: colors ??
+              [
+                Color(0xffF05454),
+                Color(0xffFEC260),
+                Color(0xffFFC100),
+              ],
+        ),
+      ),
+      child: MaterialButton(
+        onPressed: onPressed,
+        child: Text(
+          isUpperCase ? text.toUpperCase() : text,
+          style: TextStyle(
+            color: textColor ?? MyColors.secondary,
+            fontWeight: FontWeight.bold,
+            fontFamily: "Cairo",
+            fontSize: fontSize,
+          ),
+        ),
+      ),
+    );
 
 Widget divider() => Divider(
       color: MyColors.grey,
@@ -199,3 +206,22 @@ Text iconText(text) => Text(
         fontFamily: 'Roboto',
       ),
     );
+
+Widget backButton(context) => Row(children: [
+      IconButton(
+        icon: Icon(
+          Icons.arrow_back,
+        ),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+      Text(
+        "Back",
+        style: TextStyle(
+          color: MyColors.secondary,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ]);

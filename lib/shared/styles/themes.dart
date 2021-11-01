@@ -50,11 +50,17 @@ ThemeData lightTheme = ThemeData(
 
 ThemeData darkTheme = ThemeData(
   textTheme: TextTheme(
-    button: TextStyle(
-      color: MyColors.light,
-      fontWeight: FontWeight.bold,
-    ),
-  ),
+      button: TextStyle(
+        color: MyColors.light,
+        fontWeight: FontWeight.bold,
+      ),
+      bodyText1: TextStyle(
+        color: MyColors.light,
+      )),
+  colorScheme: ThemeData().colorScheme.copyWith(
+        primary: MyColors.light,
+        secondary: MyColors.green,
+      ),
   primarySwatch: MyColors.primaryColor,
   scaffoldBackgroundColor: MyColors.secondary,
   appBarTheme: AppBarTheme(
@@ -91,4 +97,43 @@ ThemeData darkTheme = ThemeData(
     ),
   ),
   fontFamily: 'Janna',
+  inputDecorationTheme: InputDecorationTheme(
+    hintStyle: TextStyle(
+      color: MyColors.light.withOpacity(0.6),
+    ),
+    errorStyle: TextStyle(
+      color: MyColors.red,
+      fontSize: 12,
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.circular(20),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: MyColors.red),
+      borderRadius: BorderRadius.circular(20),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: MyColors.grey,
+        width: 2,
+      ),
+      borderRadius: BorderRadius.circular(20),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: MyColors.grey,
+        width: 2,
+      ),
+      borderRadius: BorderRadius.circular(20),
+    ),
+    prefixStyle: TextStyle(
+      color: MyColors.primary,
+    ),
+    suffixStyle: TextStyle(
+      color: MyColors.primary,
+    ),
+    filled: true,
+    fillColor: MyColors.card,
+  ),
 );

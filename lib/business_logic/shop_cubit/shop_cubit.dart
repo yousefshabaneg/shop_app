@@ -379,6 +379,7 @@ class ShopCubit extends Cubit<ShopStates> {
           print('Get Orders Details Error ${error.toString()}');
           return;
         });
+        if (ordersDetails.length > 9) break;
       }
     }
   }

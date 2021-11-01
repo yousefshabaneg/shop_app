@@ -221,23 +221,16 @@ class FavoritesScreen extends StatelessWidget {
                   width: 15,
                 ),
                 ShopCubit.get(context).productsQuantity[model.id] == null
-                    ? Container(
-                        child: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            primary: MyColors.green,
-                          ),
-                          onPressed: () {
-                            ShopCubit.get(context).changeCartItem(model.id);
-                          },
-                          icon: Icon(
-                            Icons.add_shopping_cart,
-                            color: Colors.white,
-                          ),
-                          label: Text(
-                            'Add to cart',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
+                    ? primaryButton(
+                        width: 130,
+                        text: "Add To Cart",
+                        onPressed: () {
+                          ShopCubit.get(context).changeCartItem(model.id);
+                        },
+                        height: 35,
+                        radius: 15,
+                        fontSize: 18,
+                        isUpperCase: false,
                       )
                     : Row(
                         children: [
@@ -373,16 +366,10 @@ class FavoritesScreen extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            defaultButton(
-              text: 'Continue browsing',
-              onPressed: () {
-                ShopCubit.get(context).changeBottomNav(0);
-              },
-              fontSize: 18,
-              width: 250,
-              radius: 20,
-              background: MyColors.primary,
-            )
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: primaryButton(text: "Continue browsing", onPressed: () {}),
+            ),
           ],
         ),
       );

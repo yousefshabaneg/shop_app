@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/business_logic/login_cubit/login_cubit.dart';
 import 'package:shop_app/business_logic/login_cubit/login_states.dart';
+import 'package:shop_app/business_logic/shop_cubit/shop_cubit.dart';
 import 'package:shop_app/data/cashe_helper.dart';
 import 'package:shop_app/layout/shop_layout.dart';
 import 'package:shop_app/presentation/screens/login_screen.dart';
@@ -28,6 +29,7 @@ class RegisterScreen extends StatelessWidget {
                     key: 'token', value: state.loginModel.data!.token)
                 .then((value) {
               token = state.loginModel.data!.token;
+              ShopCubit.get(context).getOrders();
               navigateAndFinish(context, ShopLayout());
             });
             showToast(
@@ -40,13 +42,11 @@ class RegisterScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Form(
                 key: formKey,
                 child: Container(
-                  height: MediaQuery.of(context).size.height - 30,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,11 +69,11 @@ class RegisterScreen extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
-                          color: MyColors.light,
+                          color: MyColors.light.withOpacity(0.9),
                         ),
                       ),
                       SizedBox(
-                        height: 15,
+                        height: 25,
                       ),
                       defaultFormField(
                         controller: nameController,
@@ -82,10 +82,10 @@ class RegisterScreen extends StatelessWidget {
                           return value!.isEmpty ? 'Enter your name. ' : null;
                         },
                         prefixIcon: Icons.account_circle_outlined,
-                        label: 'Name',
+                        hint: 'Name',
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       defaultFormField(
                         controller: phoneController,
@@ -96,10 +96,10 @@ class RegisterScreen extends StatelessWidget {
                               : null;
                         },
                         prefixIcon: Icons.phone_android_outlined,
-                        label: 'Phone',
+                        hint: 'Phone',
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       defaultFormField(
                         controller: emailController,
@@ -110,10 +110,10 @@ class RegisterScreen extends StatelessWidget {
                               : null;
                         },
                         prefixIcon: Icons.email_outlined,
-                        label: 'Email Address',
+                        hint: 'Email Address',
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       defaultFormField(
                         controller: passwordController,
@@ -124,7 +124,7 @@ class RegisterScreen extends StatelessWidget {
                               : null;
                         },
                         prefixIcon: Icons.lock_outlined,
-                        label: 'Password',
+                        hint: 'Password',
                         isPassword: LoginCubit.get(context).isPassword,
                         suffixIcon: LoginCubit.get(context).suffix,
                         suffixPressed: () {
@@ -132,13 +132,12 @@ class RegisterScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(
-                        height: 15,
+                        height: 25,
                       ),
                       ConditionalBuilder(
                         condition: state is! RegisterLoadingState,
-                        builder: (context) => defaultButton(
-                          text: 'Register',
-                          isUpperCase: true,
+                        builder: (context) => primaryButton(
+                          text: "Register",
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               LoginCubit.get(context).userRegister(
@@ -149,23 +148,20 @@ class RegisterScreen extends StatelessWidget {
                               );
                             }
                           },
-                          radius: 30,
-                          background: MyColors.primary,
                         ),
                         fallback: (context) => buildProgressIndicator(),
                       ),
-                      Divider(
-                        color: MyColors.dark,
-                        height: 30,
-                        thickness: 0.4,
+                      SizedBox(
+                        height: 5,
                       ),
+                      divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             'Already have an account ?',
                             style: TextStyle(
-                              color: MyColors.dark,
+                              color: MyColors.light.withOpacity(0.7),
                               fontSize: 16.0,
                             ),
                           ),
@@ -178,6 +174,7 @@ class RegisterScreen extends StatelessWidget {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
+                                color: MyColors.primary,
                                 decoration: TextDecoration.underline,
                                 decorationThickness: 3,
                               ),

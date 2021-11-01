@@ -146,29 +146,24 @@ class CartScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
                           child: state is! AddOrderLoadingState
-                              ? defaultButton(
+                              ? primaryButton(
                                   text:
-                                      'Checkout ( ${NumberFormat.currency(decimalDigits: 0, symbol: "").format(ShopCubit.get(context).cartModel!.data.total)} LE )',
+                                      "Checkout ( ${NumberFormat.currency(decimalDigits: 0, symbol: "").format(ShopCubit.get(context).cartModel!.data.total)} LE )",
                                   onPressed: () {
                                     ShopCubit.get(context).addNewOrder();
                                   },
-                                  fontSize: 18,
-                                  radius: 15,
-                                  background: MyColors.green,
                                 )
                               : buildProgressIndicator(),
                         ),
                         fallback: (context) => Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
-                          child: defaultButton(
+                          child: primaryButton(
                             text: 'Add your address to continue checkout.',
                             onPressed: () {
                               navigateTo(context, AddressScreen());
                             },
-                            fontSize: 14,
-                            radius: 15,
-                            background: MyColors.green,
+                            fontSize: 16,
                           ),
                         ),
                       ),
@@ -465,17 +460,15 @@ class CartScreen extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            defaultButton(
-              text: 'Continue browsing',
-              onPressed: () {
-                ShopCubit.get(context).changeBottomNav(0);
-                Navigator.pop(context);
-              },
-              fontSize: 18,
-              width: 250,
-              radius: 20,
-              background: MyColors.primary,
-            )
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: primaryButton(
+                  text: "Continue browsing",
+                  onPressed: () {
+                    ShopCubit.get(context).changeBottomNav(0);
+                    Navigator.of(context).pop();
+                  }),
+            ),
           ],
         ),
       );

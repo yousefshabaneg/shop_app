@@ -70,7 +70,10 @@ class AddressScreen extends StatelessWidget {
       }
 
       return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          leadingWidth: 130,
+          leading: backButton(context),
+        ),
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Padding(
@@ -78,7 +81,11 @@ class AddressScreen extends StatelessWidget {
             child: Form(
               key: formKey,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(
+                    height: 10,
+                  ),
                   ShopCubit.get(context).isNewAddress
                       ? Text(
                           "Add Your Address",
@@ -86,14 +93,16 @@ class AddressScreen extends StatelessWidget {
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             fontFamily: "Cairo",
+                            color: MyColors.light,
                           ),
                         )
                       : Text(
-                          "Change Your Address",
+                          "Your Address",
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             fontFamily: "Cairo",
+                            color: MyColors.light,
                           ),
                         ),
                   SizedBox(
@@ -106,7 +115,7 @@ class AddressScreen extends StatelessWidget {
                       return value!.isEmpty ? 'Please fill the field' : null;
                     },
                     prefixIcon: Icons.location_on,
-                    label: 'Name',
+                    hint: 'Name',
                   ),
                   SizedBox(
                     height: 25,
@@ -118,7 +127,7 @@ class AddressScreen extends StatelessWidget {
                       return value!.isEmpty ? 'Please fill the field' : null;
                     },
                     prefixIcon: Icons.location_city,
-                    label: 'City',
+                    hint: 'City',
                   ),
                   SizedBox(
                     height: 25,
@@ -130,7 +139,7 @@ class AddressScreen extends StatelessWidget {
                       return value!.isEmpty ? 'Please fill the field' : null;
                     },
                     prefixIcon: Icons.my_location_outlined,
-                    label: 'Region',
+                    hint: 'Region',
                   ),
                   SizedBox(
                     height: 25,
@@ -142,7 +151,7 @@ class AddressScreen extends StatelessWidget {
                       return value!.isEmpty ? 'Please fill the field' : null;
                     },
                     prefixIcon: Icons.details_rounded,
-                    label: 'Details',
+                    hint: 'Details',
                   ),
                   SizedBox(
                     height: 20,
@@ -153,33 +162,28 @@ class AddressScreen extends StatelessWidget {
                             ConditionalBuilder(
                               condition: state is! ChangeAddressLoadingState &&
                                   state is! AddAddressLoadingState,
-                              builder: (context) => defaultButton(
-                                width: 350,
-                                height: 50,
-                                text: 'Update',
-                                isUpperCase: true,
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
-                                    if (ShopCubit.get(context).isNewAddress) {
-                                      ShopCubit.get(context).addUserAddress(
-                                        name: nameController.text,
-                                        city: cityController.text,
-                                        region: regionController.text,
-                                        details: detailsController.text,
-                                      );
-                                    } else {
-                                      ShopCubit.get(context).changeUserAddress(
-                                        name: nameController.text,
-                                        city: cityController.text,
-                                        region: regionController.text,
-                                        details: detailsController.text,
-                                      );
+                              builder: (context) => primaryButton(
+                                  text: "Update",
+                                  onPressed: () {
+                                    if (formKey.currentState!.validate()) {
+                                      if (ShopCubit.get(context).isNewAddress) {
+                                        ShopCubit.get(context).addUserAddress(
+                                          name: nameController.text,
+                                          city: cityController.text,
+                                          region: regionController.text,
+                                          details: detailsController.text,
+                                        );
+                                      } else {
+                                        ShopCubit.get(context)
+                                            .changeUserAddress(
+                                          name: nameController.text,
+                                          city: cityController.text,
+                                          region: regionController.text,
+                                          details: detailsController.text,
+                                        );
+                                      }
                                     }
-                                  }
-                                },
-                                radius: 20,
-                                background: MyColors.primary,
-                              ),
+                                  }),
                               fallback: (context) => buildProgressIndicator(),
                             ),
                             SizedBox(
@@ -188,15 +192,17 @@ class AddressScreen extends StatelessWidget {
                             if (!ShopCubit.get(context).isNewAddress)
                               ConditionalBuilder(
                                 condition: state is! DeleteAddressLoadingState,
-                                builder: (context) => defaultButton(
-                                  width: 350,
-                                  height: 50,
-                                  text: 'Delete',
+                                builder: (context) => primaryButton(
+                                  text: "Delete",
                                   onPressed: () {
                                     ShopCubit.get(context).deleteUserAddress();
                                   },
-                                  radius: 20,
-                                  background: Colors.redAccent,
+                                  background: MyColors.red,
+                                  colors: [
+                                    Color(0xffFFC100),
+                                    MyColors.green,
+                                    Color(0xffF05454),
+                                  ],
                                 ),
                                 fallback: (context) => buildProgressIndicator(),
                               ),
@@ -209,25 +215,20 @@ class AddressScreen extends StatelessWidget {
                             ),
                             ConditionalBuilder(
                               condition: state is! AddAddressLoadingState,
-                              builder: (context) => defaultButton(
-                                width: 350,
-                                text: 'Add Address',
-                                isUpperCase: true,
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
-                                    if (ShopCubit.get(context).isNewAddress) {
-                                      ShopCubit.get(context).addUserAddress(
-                                        name: nameController.text,
-                                        city: cityController.text,
-                                        region: regionController.text,
-                                        details: detailsController.text,
-                                      );
+                              builder: (context) => primaryButton(
+                                  text: "Add Address",
+                                  onPressed: () {
+                                    if (formKey.currentState!.validate()) {
+                                      if (ShopCubit.get(context).isNewAddress) {
+                                        ShopCubit.get(context).addUserAddress(
+                                          name: nameController.text,
+                                          city: cityController.text,
+                                          region: regionController.text,
+                                          details: detailsController.text,
+                                        );
+                                      }
                                     }
-                                  }
-                                },
-                                radius: 20,
-                                background: MyColors.primary,
-                              ),
+                                  }),
                               fallback: (context) => buildProgressIndicator(),
                             ),
                           ],
