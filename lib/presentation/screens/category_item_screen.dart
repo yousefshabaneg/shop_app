@@ -12,13 +12,10 @@ import 'package:shop_app/presentation/screens/product_details_screen.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/constants/my_colors.dart';
 
-class ProductsScreen extends StatelessWidget {
-  var images = [
-    "assets/images/banners/1.jpg",
-    "assets/images/banners/2.jpg",
-    "assets/images/banners/3.jpg",
-    "assets/images/banners/4.jpg",
-  ];
+class CategoryItemScreen extends StatelessWidget {
+  final String name;
+
+  CategoryItemScreen({required this.name});
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShopCubit, ShopStates>(
@@ -35,141 +32,64 @@ class ProductsScreen extends StatelessWidget {
       },
       builder: (context, state) {
         var cubit = ShopCubit.get(context);
-        return ConditionalBuilder(
-          condition: cubit.homeModel != null,
-          builder: (context) =>
-              homeBuilder(cubit.homeModel!, cubit.categoriesModel!, context),
-          fallback: (context) => buildSearchLoadingIndicator(),
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              name.toUpperCase(),
+              style: TextStyle(
+                fontSize: 18,
+                letterSpacing: 0.4,
+              ),
+            ),
+            leading: BackButton(
+              onPressed: () {
+                Navigator.pop(context);
+                ShopCubit.get(context).categoryItemModel = null;
+              },
+            ),
+          ),
+          body: ConditionalBuilder(
+            condition: cubit.categoryItemModel != null,
+            builder: (context) => ConditionalBuilder(
+              condition: cubit.categoryItemModel!.data.total > 0,
+              builder: (context) => categoryItemBuilder(
+                  cubit.categoryItemModel!, cubit.categoriesModel!, context),
+              fallback: (context) => buildNoItemsInCategory(context),
+            ),
+            fallback: (context) => buildSearchLoadingIndicator(),
+          ),
         );
       },
     );
   }
 
-  Widget homeBuilder(
-          HomeModel homeModel, CategoriesModel categoriesModel, context) =>
+  Widget categoryItemBuilder(CategoryItemModel catItemModel,
+          CategoriesModel categoriesModel, context) =>
       SingleChildScrollView(
         physics: BouncingScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CarouselSlider(
-              items: images
-                  .map(
-                    (banner) => Image(
-                      image: AssetImage(banner),
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                  .toList(),
-              options: CarouselOptions(
-                height: 230,
-                reverse: false,
-                viewportFraction: 1,
-                scrollDirection: Axis.horizontal,
-                autoPlay: true,
-                autoPlayAnimationDuration: Duration(milliseconds: 1500),
-                autoPlayInterval: Duration(seconds: 7),
-                autoPlayCurve: Curves.easeInOutQuint,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Categories',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w800,
-                      color: MyColors.light,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 110,
-                    child: Scrollbar(
-                      thickness: 1,
-                      child: ListView.separated(
-                        physics: BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) => buildCategories(
-                            categoriesModel.data.categoriesList[index]),
-                        separatorBuilder: (context, index) => SizedBox(
-                          width: 5,
-                        ),
-                        itemCount: categoriesModel.data.categoriesList.length,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    'New Products',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w800,
-                      color: MyColors.light,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            GridView.count(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              crossAxisSpacing: 15,
-              mainAxisSpacing: 15,
-              childAspectRatio: 1 / 1.97,
-              children: List.generate(
-                homeModel.data.products.length,
-                (index) =>
-                    buildGridProduct(homeModel.data.products[index], context),
-              ),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-          ],
-        ),
-      );
-
-  Widget buildCategories(DataModel model) => Container(
-        width: 110,
-        child: Column(
-          children: [
-            Container(
-              width: 80.0,
-              height: 80.0,
-              decoration: new BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: MyColors.primary, width: 2),
-                image: new DecorationImage(
-                  image: NetworkImage(
-                    model.image,
-                  ),
-                  fit: BoxFit.cover,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GridView.count(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                crossAxisCount: 2,
+                crossAxisSpacing: 15,
+                mainAxisSpacing: 15,
+                childAspectRatio: 1 / 2,
+                children: List.generate(
+                  catItemModel.data.products.length,
+                  (index) => buildGridProduct(
+                      catItemModel.data.products[index], context),
                 ),
               ),
-            ),
-            Text(
-              model.name.toUpperCase(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 13,
-                fontFamily: 'Cairo',
-                color: MyColors.light,
+              SizedBox(
+                height: 25,
               ),
-              textAlign: TextAlign.center,
-            )
-          ],
+            ],
+          ),
         ),
       );
 
@@ -191,6 +111,49 @@ class ProductsScreen extends StatelessWidget {
                 height: 100,
               ),
             ),
+          ),
+        ),
+      );
+
+  Widget buildNoItemsInCategory(context) => Container(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 50,
+                backgroundColor: MyColors.primaryColor,
+                child: Icon(
+                  Icons.warning_amber_outlined,
+                  color: MyColors.secondary,
+                  size: 60,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Sorry, this section does not contain products yet :(',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: MyColors.primary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: primaryButton(
+                    text: "Back to categories",
+                    onPressed: () {
+                      ShopCubit.get(context).categoryItemModel = null;
+                      Navigator.pop(context);
+                    }),
+              ),
+            ],
           ),
         ),
       );

@@ -19,223 +19,236 @@ class SettingsScreen extends StatelessWidget {
     return BlocConsumer<ShopCubit, ShopStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        var user = ShopCubit.get(context).userModel!.data!;
         return Scaffold(
           body: ConditionalBuilder(
             condition: ShopCubit.get(context).userModel != null,
-            builder: (context) => Container(
-              color: MyColors.secondary,
-              height: MediaQuery.of(context).size.height,
-              child: Stack(
-                children: [
-                  Stack(
-                    children: [
-                      ClipPath(
-                        clipper: OvalBottomBorderClipper(),
-                        child: Container(
-                          height: 230,
-                          color: MyColors.primary,
-                        ),
-                      ),
-                      Positioned.fill(
-                        child: Align(
-                          alignment: Alignment(-0.9, -0.90),
+            builder: (context) {
+              var user = ShopCubit.get(context).userModel!.data!;
+              return Container(
+                color: MyColors.secondary,
+                height: MediaQuery.of(context).size.height,
+                child: Stack(
+                  children: [
+                    Stack(
+                      children: [
+                        ClipPath(
+                          clipper: OvalBottomBorderClipper(),
                           child: Container(
-                            height: 65,
-                            width: 65,
-                            decoration: BoxDecoration(
-                              color: MyColors.card,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: MyColors.light,
-                                width: 2,
-                              ),
-                              image: DecorationImage(
-                                image: AssetImage('assets/images/1.jpg'),
+                            height: 230,
+                            color: MyColors.primary,
+                          ),
+                        ),
+                        Positioned.fill(
+                          child: Align(
+                            alignment: Alignment(-0.9, -0.90),
+                            child: Container(
+                              height: 65,
+                              width: 65,
+                              decoration: BoxDecoration(
+                                color: MyColors.card,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: MyColors.light,
+                                  width: 2,
+                                ),
+                                image: DecorationImage(
+                                  image: AssetImage('assets/images/img.png'),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      Positioned.fill(
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 100,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 270,
-                                    child: Text(
-                                      "Hi, ${user.name.toUpperCase()}",
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: MyColors.grey,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
+                        Positioned.fill(
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 100,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 270,
+                                      child: Text(
+                                        "Hi, ${user.name.toUpperCase()}",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: MyColors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Text(
-                                    "UID: ${user.id}",
-                                    style: TextStyle(
-                                      color: MyColors.grey.withOpacity(0.9),
-                                      fontSize: 15,
+                                    Text(
+                                      "UID: ${user.id}",
+                                      style: TextStyle(
+                                        color: MyColors.grey.withOpacity(0.9),
+                                        fontSize: 15,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    "Email Address: ${user.email.toUpperCase()}",
-                                    style: TextStyle(
-                                      color: MyColors.grey.withOpacity(0.9),
-                                      fontSize: 14,
+                                    Text(
+                                      "Email Address: ${user.email.toUpperCase()}",
+                                      style: TextStyle(
+                                        color: MyColors.grey.withOpacity(0.9),
+                                        fontSize: 14,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Positioned.fill(
-                    child: Align(
-                      alignment: Alignment(0, 1.9),
-                      child: Container(
-                        height: 480,
-                        width: 350,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: MyColors.card,
-                        ),
-                        child: Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                navigateTo(context, MyOrdersScreen());
-                              },
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    15, 15, 5, 19),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.view_list,
-                                      size: 25,
-                                      color: MyColors.red,
-                                    ),
-                                    SizedBox(
-                                      width: 35,
-                                    ),
-                                    Text(
-                                      "My Orders",
-                                      style: TextStyle(
-                                          color: MyColors.light,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    ),
-                                    Spacer(),
-                                    Text(
-                                      "Total (${ShopCubit.get(context).ordersDetails.length})",
-                                      style: TextStyle(
-                                        color: MyColors.primaryColor
-                                            .withOpacity(0.6),
-                                        fontFamily: "Roboto",
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.arrow_right,
-                                      size: 30,
-                                      color: MyColors.grey.withOpacity(0.6),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                ShopCubit.get(context).changeBottomNav(2);
-                              },
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    15, 15, 5, 19),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.favorite,
-                                      size: 25,
-                                      color: MyColors.red,
-                                    ),
-                                    SizedBox(
-                                      width: 35,
-                                    ),
-                                    Text(
-                                      "My Wishlist",
-                                      style: TextStyle(
-                                          color: MyColors.light,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    ),
-                                    Spacer(),
-                                    Text(
-                                      "Total (${ShopCubit.get(context).favoritesModel!.data.favData.length})",
-                                      style: TextStyle(
-                                        color: MyColors.primaryColor
-                                            .withOpacity(0.6),
-                                        fontFamily: "Roboto",
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.arrow_right,
-                                      size: 30,
-                                      color: MyColors.grey.withOpacity(0.6),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            buildRowIcons(
-                                onTap: () {
-                                  navigateTo(context, AddressScreen());
-                                },
-                                text: "My Address",
-                                icon: Icons.location_on,
-                                color: Colors.orange),
-                            buildRowIcons(
-                              text: "My Profile",
-                              icon: Icons.account_box,
-                            ),
-                            buildRowIcons(
-                                text: "Change Password",
-                                icon: Icons.vpn_key,
-                                color: Colors.indigo),
-                            buildRowIcons(
-                              text: "About us",
-                              icon: Icons.info,
-                            ),
-                            buildRowIcons(
-                              text: "Sign Out",
-                              icon: Icons.logout,
-                              onTap: () {
-                                signOut(context);
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
+                      ],
                     ),
-                  )
-                ],
-              ),
-            ),
-            fallback: (context) => buildProgressIndicator(),
+                    Positioned.fill(
+                      child: Align(
+                        alignment: Alignment(0, 1.9),
+                        child: Container(
+                          height: 480,
+                          width: 350,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: MyColors.card,
+                          ),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    navigateTo(context, MyOrdersScreen());
+                                  },
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            15, 15, 5, 19),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.view_list,
+                                          size: 25,
+                                          color: MyColors.red,
+                                        ),
+                                        SizedBox(
+                                          width: 35,
+                                        ),
+                                        Text(
+                                          "My Orders",
+                                          style: TextStyle(
+                                              color: MyColors.light,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15),
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          "Total (${ShopCubit.get(context).ordersDetails.length})",
+                                          style: TextStyle(
+                                            color: MyColors.primaryColor
+                                                .withOpacity(0.6),
+                                            fontFamily: "Roboto",
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.arrow_right,
+                                          size: 30,
+                                          color: MyColors.grey.withOpacity(0.6),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    ShopCubit.get(context).changeBottomNav(2);
+                                  },
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            15, 15, 5, 19),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.favorite,
+                                          size: 25,
+                                          color: MyColors.red,
+                                        ),
+                                        SizedBox(
+                                          width: 35,
+                                        ),
+                                        Text(
+                                          "My Wishlist",
+                                          style: TextStyle(
+                                              color: MyColors.light,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15),
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          "Total (${ShopCubit.get(context).favoritesModel!.data.favData.length})",
+                                          style: TextStyle(
+                                            color: MyColors.primaryColor
+                                                .withOpacity(0.6),
+                                            fontFamily: "Roboto",
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.arrow_right,
+                                          size: 30,
+                                          color: MyColors.grey.withOpacity(0.6),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                buildRowIcons(
+                                    onTap: () {
+                                      navigateTo(context, AddressScreen());
+                                    },
+                                    text: "My Address",
+                                    icon: Icons.location_on,
+                                    color: Colors.orange),
+                                buildRowIcons(
+                                  onTap: () {
+                                    navigateTo(context, MyAccountScreen());
+                                  },
+                                  text: "My Profile",
+                                  icon: Icons.account_box,
+                                ),
+                                buildRowIcons(
+                                    onTap: () {
+                                      navigateTo(
+                                          context, ChangePasswordScreen());
+                                    },
+                                    text: "Change Password",
+                                    icon: Icons.vpn_key,
+                                    color: Colors.indigo),
+                                buildRowIcons(
+                                  text: "About us",
+                                  icon: Icons.info,
+                                ),
+                                buildRowIcons(
+                                  text: "Sign Out",
+                                  icon: Icons.logout,
+                                  onTap: () {
+                                    signOut(context);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            },
+            fallback: (context) => buildSearchLoadingIndicator(),
           ),
         );
       },

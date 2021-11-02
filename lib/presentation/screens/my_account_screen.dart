@@ -6,6 +6,7 @@ import 'package:shop_app/business_logic/login_cubit/login_states.dart';
 import 'package:shop_app/business_logic/shop_cubit/shop_cubit.dart';
 import 'package:shop_app/business_logic/shop_cubit/shop_states.dart';
 import 'package:shop_app/shared/components/components.dart';
+import 'package:shop_app/shared/constants/my_colors.dart';
 
 class MyAccountScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
@@ -36,7 +37,10 @@ class MyAccountScreen extends StatelessWidget {
       emailController.text = userModel.data!.email;
       phoneController.text = userModel.data!.phone;
       return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          leadingWidth: 130,
+          leading: backButton(context),
+        ),
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Padding(
@@ -44,17 +48,19 @@ class MyAccountScreen extends StatelessWidget {
             child: Form(
               key: formKey,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Your Account",
                     style: TextStyle(
                       fontSize: 30,
+                      color: MyColors.light,
                       fontWeight: FontWeight.bold,
                       fontFamily: "Cairo",
                     ),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 25,
                   ),
                   defaultFormField(
                     controller: nameController,
@@ -94,7 +100,7 @@ class MyAccountScreen extends StatelessWidget {
                     hint: 'Phone',
                   ),
                   SizedBox(
-                    height: 25,
+                    height: 50,
                   ),
                   ConditionalBuilder(
                     condition: state is! UpdateProfileLoadingState,
@@ -116,7 +122,7 @@ class MyAccountScreen extends StatelessWidget {
                   ConditionalBuilder(
                     condition: state is! LogoutLoadingState,
                     builder: (context) => primaryButton(
-                        text: "Logout",
+                        text: "Sign Out",
                         onPressed: () {
                           LoginCubit.get(context).userLogout();
                         }),

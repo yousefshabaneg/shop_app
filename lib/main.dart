@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode: ThemeMode.dark,
-        home: widget,
+        home: OnBoardingScreen(),
         builder: BotToastInit(),
         navigatorObservers: [BotToastNavigatorObserver()],
       ),

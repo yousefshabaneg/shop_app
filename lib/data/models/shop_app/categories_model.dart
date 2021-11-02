@@ -1,3 +1,4 @@
+import 'package:shop_app/data/models/shop_app/home_model.dart';
 import 'package:shop_app/shared/constants/strings.dart';
 
 class CategoriesModel {
@@ -38,4 +39,23 @@ class DataModel {
     42: sportsImage,
     40: lightingImage
   };
+}
+
+class CategoryItemModel {
+  late bool status;
+  late CategoryData data;
+  CategoryItemModel.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    data = CategoryData.fromJson(json['data']);
+  }
+}
+
+class CategoryData {
+  late int total;
+  List<ProductModel> products = [];
+  CategoryData.fromJson(Map<String, dynamic> json) {
+    total = json["total"];
+    products =
+        List.from(json["data"]).map((e) => ProductModel.fromJson(e)).toList();
+  }
 }

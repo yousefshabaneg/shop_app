@@ -16,6 +16,8 @@ class LoginScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
+  final FocusNode passwordFocusNode = FocusNode();
+  final FocusNode emailFocusNode = FocusNode();
   bool isVisible = true;
 
   @override
@@ -82,6 +84,7 @@ class LoginScreen extends StatelessWidget {
                       height: 50,
                     ),
                     defaultFormField(
+                      focusNode: emailFocusNode,
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       validate: (value) {
@@ -91,11 +94,18 @@ class LoginScreen extends StatelessWidget {
                       },
                       prefixIcon: Icons.email_outlined,
                       hint: 'Email Address',
+                      onSubmit: (String value) {
+                        if (value.isNotEmpty)
+                          passwordFocusNode.requestFocus();
+                        else
+                          emailFocusNode.requestFocus();
+                      },
                     ),
                     SizedBox(
                       height: 30,
                     ),
                     defaultFormField(
+                      focusNode: passwordFocusNode,
                       controller: passwordController,
                       keyboardType: TextInputType.visiblePassword,
                       validate: (value) {

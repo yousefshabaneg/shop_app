@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +11,7 @@ import 'package:shop_app/data/models/shop_app/favorites_model.dart';
 import 'package:shop_app/data/models/shop_app/get_carts_model.dart';
 import 'package:shop_app/data/models/shop_app/home_model.dart';
 import 'package:shop_app/data/models/shop_app/login_model.dart';
+import 'package:shop_app/data/models/shop_app/search_model.dart';
 import 'package:shop_app/data/models/shop_app/update_cart_model.dart';
 import 'package:shop_app/presentation/screens/categories_screen.dart';
 import 'package:shop_app/presentation/screens/favorites_screen.dart';
@@ -34,7 +33,6 @@ class ShopCubit extends Cubit<ShopStates> {
     FavoritesScreen(),
     SettingsScreen(),
   ];
-
   List<Widget> bottomItems = [
     Icon(Icons.home),
     Icon(Icons.apps),
@@ -47,18 +45,40 @@ class ShopCubit extends Cubit<ShopStates> {
     emit(ShopChangeBottomNavState());
   }
 
+  var productsMap = {};
+  var categoryProductsMap = {};
+
   HomeModel? homeModel;
   void getHomeData() {
     emit(ShopLoadingHomeDataState());
     DioHelper.getData(url: Home, token: token).then((json) {
       homeModel = HomeModel.fromJson(json);
+      var i = 0;
       homeModel!.data.products.forEach((element) {
+        productsMap[element.id] = i++;
         favorites[element.id] = element.inFavorites;
       });
       emit(ShopSuccessHomeDataState());
     }).catchError((error) {
       print('GET Home Model ERROR');
       emit(ShopErrorHomeDataState(error));
+      print(error.toString());
+    });
+  }
+
+  CategoryItemModel? categoryItemModel;
+  void getCategoryData({required int categoryId}) {
+    emit(ShopLoadingCategoryItemDataState());
+    DioHelper.getData(url: "categories/$categoryId", token: token).then((json) {
+      categoryItemModel = CategoryItemModel.fromJson(json);
+      var i = 0;
+      categoryItemModel!.data.products.forEach((element) {
+        categoryProductsMap[element.id] = i++;
+      });
+      emit(ShopSuccessCategoryItemDataState());
+    }).catchError((error) {
+      print('GET Home Model ERROR');
+      emit(ShopErrorCategoryItemDataState(error));
       print(error.toString());
     });
   }
@@ -95,7 +115,6 @@ class ShopCubit extends Cubit<ShopStates> {
       token: token,
     ).then((value) {
       changeFavoritesModel = ChangeFavoritesModel.fromJson(value.data);
-      print(changeFavoritesModel!.status);
       if (!changeFavoritesModel!.status) {
         favorites[productId] = !favorites[productId]!;
       } else {
@@ -344,15 +363,14 @@ class ShopCubit extends Cubit<ShopStates> {
 
   GetOrderModel? orderModel;
   void getOrders() {
-    ordersDetails.clear();
-    ordersIds.clear();
     emit(GetOrdersLoadingState());
     DioHelper.getData(url: Orders, token: token).then((orders) {
       orderModel = GetOrderModel.fromJson(orders);
+      ordersDetails.clear();
+      ordersIds.clear();
       orderModel!.data.data.forEach((element) {
         ordersIds.add(element.id);
       });
-      ordersIds.sort((b, a) => a.compareTo(b));
       emit(GetOrdersSuccessState(orderModel!));
       getOrdersDetails();
     }).catchError((error) {
@@ -379,7 +397,6 @@ class ShopCubit extends Cubit<ShopStates> {
           print('Get Orders Details Error ${error.toString()}');
           return;
         });
-        if (ordersDetails.length > 9) break;
       }
     }
   }
@@ -412,5 +429,39 @@ class ShopCubit extends Cubit<ShopStates> {
       print('${error.toString()}');
       emit(AddOrderErrorState(error));
     });
+  }
+
+  CancelOrderModel? cancelOrderModel;
+  void cancelOrder({required int id}) {
+    emit(CancelOrderLoadingState());
+    DioHelper.getData(url: "orders/$id/cancel", token: token).then((value) {
+      cancelOrderModel = CancelOrderModel.fromJson(value);
+      getOrders();
+      emit(CancelOrderSuccessState(cancelOrderModel!));
+    }).catchError((error) {
+      print('${error.toString()}');
+      emit(CancelOrderErrorState(error));
+    });
+  }
+
+  SearchModel? searchModel;
+  var controller = TextEditingController();
+
+  void getSearch({required String keyWord}) {
+    emit(SearchLoadingState());
+    DioHelper.postData(url: Search, data: {
+      "text": keyWord,
+    }).then((value) {
+      searchModel = SearchModel.fromJson(value.data);
+      emit(SearchSuccessState());
+    }).catchError((error) {
+      print("Search Error : $error");
+      emit(SearchErrorState(error));
+    });
+  }
+
+  void clearSearchData() {
+    controller.clear();
+    searchModel = null;
   }
 }

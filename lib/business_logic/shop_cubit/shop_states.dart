@@ -4,6 +4,7 @@ import 'package:shop_app/data/models/shop_app/address_model.dart';
 import 'package:shop_app/data/models/shop_app/favorites_model.dart';
 import 'package:shop_app/data/models/shop_app/home_model.dart';
 import 'package:shop_app/data/models/shop_app/login_model.dart';
+import 'package:shop_app/data/models/shop_app/search_model.dart';
 import 'package:shop_app/data/models/shop_app/update_cart_model.dart';
 import 'package:shop_app/data/models/shop_app/order_model.dart';
 
@@ -21,6 +22,16 @@ class ShopErrorHomeDataState extends ShopStates {
   final String error;
 
   ShopErrorHomeDataState(this.error);
+}
+
+class ShopLoadingCategoryItemDataState extends ShopStates {}
+
+class ShopSuccessCategoryItemDataState extends ShopStates {}
+
+class ShopErrorCategoryItemDataState extends ShopStates {
+  final String error;
+
+  ShopErrorCategoryItemDataState(this.error);
 }
 
 class ShopLoadingCartDataState extends ShopStates {}
@@ -170,6 +181,20 @@ class AddOrderErrorState extends ShopStates {
   AddOrderErrorState(this.error);
 }
 
+class CancelOrderLoadingState extends ShopStates {}
+
+class CancelOrderSuccessState extends ShopStates {
+  final CancelOrderModel cancelOrderModel;
+
+  CancelOrderSuccessState(this.cancelOrderModel);
+}
+
+class CancelOrderErrorState extends ShopStates {
+  final String error;
+
+  CancelOrderErrorState(this.error);
+}
+
 class GetOrdersLoadingState extends ShopStates {}
 
 class GetOrdersSuccessState extends ShopStates {
@@ -199,3 +224,13 @@ class OrderDetailsErrorState extends ShopStates {
 }
 
 class ShopDecrementFavItems extends ShopStates {}
+
+class SearchLoadingState extends ShopStates {}
+
+class SearchSuccessState extends ShopStates {}
+
+class SearchErrorState extends ShopStates {
+  final String error;
+
+  SearchErrorState(this.error);
+}

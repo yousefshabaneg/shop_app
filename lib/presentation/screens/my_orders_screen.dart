@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,49 +13,96 @@ class MyOrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShopCubit, ShopStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is CancelOrderSuccessState) {
+          if (state.cancelOrderModel.status) {
+            AwesomeDialog(
+              context: context,
+              dialogType: DialogType.SUCCES,
+              animType: AnimType.SCALE,
+              title: 'Order has been Cancelled.',
+              desc: "Your order was cancelled successfully!",
+              btnOkOnPress: () {},
+            )..show();
+          } else {}
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            leadingWidth: 130,
-            leading: backButton(context),
+            centerTitle: true,
+            title: Row(
+              children: [
+                Text(
+                  'Orders',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 30,
+                    color: MyColors.secondary,
+                  ),
+                ),
+              ],
+            ),
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          width: 35,
+                          height: 35,
+                          decoration: BoxDecoration(
+                            color: MyColors.card,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        Text(
+                          '${ShopCubit.get(context).ordersDetails.length}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 20,
+                            color: MyColors.light,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Items',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 18,
+                        color: MyColors.secondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
           body: ConditionalBuilder(
             condition: ShopCubit.get(context).orderModel!.data.data.length > 0,
             builder: (context) => ConditionalBuilder(
-              condition: ShopCubit.get(context).ordersDetails.isNotEmpty,
+              condition: ShopCubit.get(context).ordersDetails.isNotEmpty &&
+                  state is! CancelOrderLoadingState,
               builder: (context) => SingleChildScrollView(
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 10),
-                      child: Row(
-                        children: [
-                          Text(
-                            'My Orders  ',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 24,
-                              color: MyColors.light,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.only(top: 3.0),
-                            child: Text(
-                              '( ${ShopCubit.get(context).ordersDetails.length.toString()} orders )',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: MyColors.green,
-                              ),
-                            ),
-                          ),
-                          Spacer(),
-                          if (state is ShopChangeFavoritesState)
-                            buildProgressIndicator(),
-                        ],
-                      ),
+                    SizedBox(
+                      height: 10,
                     ),
                     ListView.separated(
                       itemBuilder: (context, index) => buildOrderItem(
@@ -69,7 +117,7 @@ class MyOrdersScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              fallback: (context) => buildProgressIndicator(),
+              fallback: (context) => buildSearchLoadingIndicator(),
             ),
             fallback: (context) => buildNoOrders(context),
           ),
@@ -212,18 +260,32 @@ class MyOrdersScreen extends StatelessWidget {
                     Text(
                       model.status,
                       style: TextStyle(
-                        color: MyColors.green,
+                        color: (model.status == "New")
+                            ? MyColors.green
+                            : MyColors.red,
                         fontFamily: "Cairo",
                         fontWeight: FontWeight.w900,
                         fontSize: 20,
                       ),
                     ),
-                    primaryButton(
-                      text: "Cancel",
-                      onPressed: () {},
-                      width: 100,
-                      height: 30,
-                    ),
+                    if (model.status == "New")
+                      primaryButton(
+                        text: "Cancel",
+                        onPressed: () {
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.QUESTION,
+                            animType: AnimType.SCALE,
+                            title: 'Are you Sure for Cancel Order ?',
+                            btnOkOnPress: () {
+                              ShopCubit.get(context).cancelOrder(id: model.id);
+                            },
+                            btnCancelOnPress: () {},
+                          )..show();
+                        },
+                        width: 100,
+                        height: 30,
+                      ),
                   ],
                 ),
               ],

@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.8.1"
+  awesome_dialog:
+    dependency: "direct main"
+    description:
+      name: awesome_dialog
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.1"
   bloc:
     dependency: "direct main"
     description:
@@ -127,6 +134,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.2"
+  flare_flutter:
+    dependency: transitive
+    description:
+      name: flare_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.2"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -160,6 +174,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  flutter_svg:
+    dependency: "direct main"
+    description:
+      name: flutter_svg
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.23.0+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -226,6 +247,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  loading_indicator:
+    dependency: "direct main"
+    description:
+      name: loading_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.2"
   matcher:
     dependency: transitive
     description:
@@ -261,6 +289,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+  path_drawing:
+    dependency: transitive
+    description:
+      name: path_drawing
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.1+1"
+  path_parsing:
+    dependency: transitive
+    description:
+      name: path_parsing
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1"
   path_provider:
     dependency: transitive
     description:
@@ -296,6 +338,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
+  petitparser:
+    dependency: transitive
+    description:
+      name: petitparser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.4.0"
   platform:
     dependency: transitive
     description:
@@ -373,6 +422,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
+  simple_animations:
+    dependency: transitive
+    description:
+      name: simple_animations
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.2.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -413,6 +469,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  supercharged:
+    dependency: transitive
+    description:
+      name: supercharged
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.1"
+  supercharged_dart:
+    dependency: transitive
+    description:
+      name: supercharged_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.1"
   term_glyph:
     dependency: transitive
     description:
@@ -483,6 +553,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
+  xml:
+    dependency: transitive
+    description:
+      name: xml
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.3.1"
 sdks:
   dart: ">=2.14.0 <3.0.0"
   flutter: ">=2.5.0"

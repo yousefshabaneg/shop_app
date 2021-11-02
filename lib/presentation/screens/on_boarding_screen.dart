@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gradients/gradients.dart';
 import 'package:shop_app/data/cashe_helper.dart';
 import 'package:shop_app/presentation/screens/login_screen.dart';
 import 'package:shop_app/shared/components/components.dart';
@@ -23,18 +25,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   var _currentPage = 0;
   List<BoardingModel> boardingModels = [
     BoardingModel(
-      Image: 'assets/images/boarding/1.png',
+      Image: 'assets/images/boarding/1.svg',
       title: 'Keep Save',
       body:
           'Accept cryptocurrencies and digital assets, keep thern here, or send to orthers',
     ),
     BoardingModel(
-        Image: 'assets/images/boarding/2.png',
+        Image: 'assets/images/boarding/2.svg',
         title: 'Buy & Invest',
         body:
             'Buy Bitcoin and cryptocurrencies with VISA and MasterVard right in the App'),
     BoardingModel(
-      Image: 'assets/images/boarding/3.png',
+      Image: 'assets/images/boarding/3.svg',
       title: 'Sell & Exchange',
       body:
           'Sell your Bitcoin cryptocurrencies or Change with orthres digital assets or flat money',
@@ -44,12 +46,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         actions: [
           TextButton(
             child: Text(
               'SKIP',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                color: MyColors.primary,
                 fontSize: 18,
               ),
             ),
@@ -58,7 +63,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(30.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
             Expanded(
@@ -84,7 +89,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   axisDirection: Axis.horizontal,
                   effect: ExpandingDotsEffect(
                     activeDotColor: MyColors.primary,
-                    dotColor: MyColors.dark,
+                    dotColor: MyColors.light.withOpacity(0.7),
                     dotHeight: 10,
                     dotWidth: 10,
                     expansionFactor: 6,
@@ -107,28 +112,33 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   );
                 }
               },
-              child: AnimatedContainer(
-                alignment: Alignment.center,
-                duration: Duration(milliseconds: 150),
-                height: 70,
-                width: isLast() ? 180 : 75,
+              child: Container(
+                width: double.infinity,
+                height: 60,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
                 decoration: BoxDecoration(
                   color: MyColors.primary,
-                  borderRadius: BorderRadius.circular(35),
+                  borderRadius: BorderRadius.circular(25),
+                  gradient: LinearGradientPainter(
+                    colorSpace: ColorSpace.oklab,
+                    colors: [
+                      Color(0xffF05454),
+                      Color(0xffFEC260),
+                      Color(0xffFFC100),
+                    ],
+                  ),
                 ),
-                child: isLast()
-                    ? Text(
-                        'Get Started',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
-                      )
-                    : Icon(
-                        Icons.navigate_next,
-                        size: 50,
-                        color: Colors.white,
-                      ),
+                child: Center(
+                  child: Text(
+                    '${isLast() ? "Get Started" : "Next"}',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: MyColors.secondary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
               ),
             ), // Indicator
           ],
@@ -158,8 +168,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   Widget buildBoardingItem(BoardingModel model) => Column(
         children: [
           Expanded(
-            child: Image(
-              image: AssetImage(model.Image),
+            child: SvgPicture.asset(
+              model.Image,
+              width: 300,
             ),
           ),
           SizedBox(
@@ -168,8 +179,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           Text(
             model.title,
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 34,
               fontWeight: FontWeight.bold,
+              color: MyColors.light,
             ),
           ),
           SizedBox(
@@ -182,6 +194,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
+                color: MyColors.light.withOpacity(0.6),
               ),
               textAlign: TextAlign.center,
             ),

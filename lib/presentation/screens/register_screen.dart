@@ -19,6 +19,11 @@ class RegisterScreen extends StatelessWidget {
   var passwordController = TextEditingController();
   bool isVisible = true;
 
+  final FocusNode nameFocusNode = FocusNode();
+  final FocusNode phoneFocusNode = FocusNode();
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginStates>(
@@ -77,17 +82,25 @@ class RegisterScreen extends StatelessWidget {
                       ),
                       defaultFormField(
                         controller: nameController,
+                        focusNode: nameFocusNode,
                         keyboardType: TextInputType.name,
                         validate: (value) {
                           return value!.isEmpty ? 'Enter your name. ' : null;
                         },
                         prefixIcon: Icons.account_circle_outlined,
                         hint: 'Name',
+                        onSubmit: (String value) {
+                          if (value.isNotEmpty)
+                            phoneFocusNode.requestFocus();
+                          else
+                            nameFocusNode.requestFocus();
+                        },
                       ),
                       SizedBox(
                         height: 15,
                       ),
                       defaultFormField(
+                        focusNode: phoneFocusNode,
                         controller: phoneController,
                         keyboardType: TextInputType.phone,
                         validate: (value) {
@@ -97,11 +110,18 @@ class RegisterScreen extends StatelessWidget {
                         },
                         prefixIcon: Icons.phone_android_outlined,
                         hint: 'Phone',
+                        onSubmit: (String value) {
+                          if (value.isNotEmpty)
+                            emailFocusNode.requestFocus();
+                          else
+                            phoneFocusNode.requestFocus();
+                        },
                       ),
                       SizedBox(
                         height: 15,
                       ),
                       defaultFormField(
+                        focusNode: emailFocusNode,
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         validate: (value) {
@@ -111,11 +131,18 @@ class RegisterScreen extends StatelessWidget {
                         },
                         prefixIcon: Icons.email_outlined,
                         hint: 'Email Address',
+                        onSubmit: (String value) {
+                          if (value.isNotEmpty)
+                            passwordFocusNode.requestFocus();
+                          else
+                            emailFocusNode.requestFocus();
+                        },
                       ),
                       SizedBox(
                         height: 15,
                       ),
                       defaultFormField(
+                        focusNode: passwordFocusNode,
                         controller: passwordController,
                         keyboardType: TextInputType.visiblePassword,
                         validate: (value) {

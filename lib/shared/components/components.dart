@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradients/gradients.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:shop_app/shared/constants/my_colors.dart';
 
 Widget dividerSeparator() => Divider(
@@ -12,6 +13,7 @@ Widget dividerSeparator() => Divider(
 //<editor-fold desc='Default FormField'>
 Widget defaultFormField({
   required TextEditingController controller,
+  FocusNode? focusNode,
   required TextInputType keyboardType,
   String? Function(String?)? validate,
   VoidCallback? onTap,
@@ -27,6 +29,7 @@ Widget defaultFormField({
 }) =>
     TextFormField(
       controller: controller,
+      focusNode: focusNode,
       keyboardType: keyboardType,
       obscureText: isPassword,
       decoration: InputDecoration(
@@ -53,13 +56,70 @@ Widget defaultFormField({
     );
 //</editor-fold>
 
+// Widget buildProgressIndicator() => Center(
+//         child: CircularProgressIndicator(
+//       color: MyColors.primaryColor,
+//     ));
+Widget buildSearchLoadingIndicator() => Center(
+      child: Container(
+        width: 150,
+        child: LoadingIndicator(
+            indicatorType: Indicator.ballSpinFadeLoader,
+            colors: [
+              MyColors.green,
+              MyColors.card,
+              MyColors.red,
+              Colors.lightBlue,
+              Colors.purpleAccent,
+              Color(0xffF05454),
+              Color(0xffFEC260),
+              Color(0xffFFC100),
+            ],
+            strokeWidth: 2,
+            pathBackgroundColor: Colors.black),
+      ),
+    );
 Widget buildProgressIndicator() => Center(
-        child: CircularProgressIndicator(
-      color: MyColors.primaryColor,
-    ));
+      child: Container(
+        width: 100,
+        height: 40,
+        child: LoadingIndicator(
+            indicatorType: Indicator.ballBeat,
+            colors: [
+              MyColors.green,
+              MyColors.card,
+              MyColors.red,
+              Colors.lightBlue,
+              Colors.purpleAccent,
+              Color(0xffF05454),
+              Color(0xffFEC260),
+              Color(0xffFFC100),
+            ],
+            strokeWidth: 2,
+            pathBackgroundColor: Colors.black),
+      ),
+    );
 
-void navigateTo(context, widget) =>
-    Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
+// Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
+
+void navigateTo(context, widget) => Navigator.push(
+    context,
+    PageRouteBuilder(transitionsBuilder: (BuildContext context,
+        Animation<double> animation,
+        Animation<double> secAnimation,
+        Widget child) {
+      var begin = Offset(1, 0);
+      var end = Offset(0, 0);
+      var tween = Tween(begin: begin, end: end);
+      var offsetAnimation = animation.drive(tween);
+      return SlideTransition(
+        position: offsetAnimation,
+        child: widget,
+      );
+    }, pageBuilder: (BuildContext context, Animation<double> animation,
+        Animation<double> secAnimation) {
+      return widget;
+    }));
 
 void navigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(
       context,

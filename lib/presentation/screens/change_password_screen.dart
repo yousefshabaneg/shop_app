@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/business_logic/login_cubit/login_cubit.dart';
 import 'package:shop_app/business_logic/login_cubit/login_states.dart';
 import 'package:shop_app/shared/components/components.dart';
+import 'package:shop_app/shared/constants/my_colors.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
@@ -27,7 +28,10 @@ class ChangePasswordScreen extends StatelessWidget {
       }
     }, builder: (context, state) {
       return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          leadingWidth: 130,
+          leading: backButton(context),
+        ),
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Padding(
@@ -35,6 +39,7 @@ class ChangePasswordScreen extends StatelessWidget {
             child: Form(
               key: formKey,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Change Your Password",
@@ -42,6 +47,7 @@ class ChangePasswordScreen extends StatelessWidget {
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                       fontFamily: "Cairo",
+                      color: MyColors.light,
                     ),
                   ),
                   SizedBox(

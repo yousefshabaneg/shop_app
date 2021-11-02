@@ -7,6 +7,15 @@ class AddOrderModel {
   }
 }
 
+class CancelOrderModel {
+  late bool status;
+  late String message;
+  CancelOrderModel.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+  }
+}
+
 class GetOrderModel {
   late bool status;
   late GetOrdersData data;
@@ -21,10 +30,9 @@ class GetOrdersData {
   List<GetOrderData> data = [];
   GetOrdersData.fromJson(Map<String, dynamic> json) {
     totalOrders = json['total'];
-    data = List.from(json['data'])
-        .map((e) => GetOrderData.fromJson(e))
-        .where((element) => element.status == "New")
-        .toList();
+    data =
+        List.from(json['data']).map((e) => GetOrderData.fromJson(e)).toList();
+    data.sort((a, b) => b.status.compareTo(a.status));
   }
 }
 

@@ -17,3 +17,4 @@ const Password = 'change-password';
 const Logout = 'logout';
 const Orders = 'orders';
 const Register = 'register';
+const Search = 'products/search';
