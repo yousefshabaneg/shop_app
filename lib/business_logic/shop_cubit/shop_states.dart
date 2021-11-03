@@ -1,10 +1,7 @@
 import 'package:shop_app/data/models/shop_app/ChangeFavoritesModel.dart';
 import 'package:shop_app/data/models/shop_app/add_cart_model.dart';
 import 'package:shop_app/data/models/shop_app/address_model.dart';
-import 'package:shop_app/data/models/shop_app/favorites_model.dart';
-import 'package:shop_app/data/models/shop_app/home_model.dart';
 import 'package:shop_app/data/models/shop_app/login_model.dart';
-import 'package:shop_app/data/models/shop_app/search_model.dart';
 import 'package:shop_app/data/models/shop_app/update_cart_model.dart';
 import 'package:shop_app/data/models/shop_app/order_model.dart';
 

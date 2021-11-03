@@ -35,6 +35,7 @@ class RegisterScreen extends StatelessWidget {
                 .then((value) {
               token = state.loginModel.data!.token;
               ShopCubit.get(context).getOrders();
+              ShopCubit.get(context).getCategories();
               navigateAndFinish(context, ShopLayout());
             });
             showToast(

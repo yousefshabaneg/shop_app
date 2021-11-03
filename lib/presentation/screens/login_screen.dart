@@ -14,11 +14,13 @@ import 'package:shop_app/shared/constants/my_colors.dart';
 
 class LoginScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
+  bool isVisible = true;
+
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
+
   final FocusNode passwordFocusNode = FocusNode();
   final FocusNode emailFocusNode = FocusNode();
-  bool isVisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class LoginScreen extends StatelessWidget {
                 .then((value) {
               token = state.loginModel.data!.token;
               ShopCubit.get(context).getOrders();
+              ShopCubit.get(context).getCategories();
               navigateAndFinish(context, ShopLayout());
             });
             showToast(

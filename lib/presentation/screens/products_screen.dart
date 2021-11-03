@@ -8,6 +8,7 @@ import 'package:shop_app/business_logic/shop_cubit/shop_cubit.dart';
 import 'package:shop_app/business_logic/shop_cubit/shop_states.dart';
 import 'package:shop_app/data/models/shop_app/categories_model.dart';
 import 'package:shop_app/data/models/shop_app/home_model.dart';
+import 'package:shop_app/presentation/screens/category_item_screen.dart';
 import 'package:shop_app/presentation/screens/product_details_screen.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/constants/my_colors.dart';
@@ -36,7 +37,7 @@ class ProductsScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = ShopCubit.get(context);
         return ConditionalBuilder(
-          condition: cubit.homeModel != null,
+          condition: cubit.homeModel != null && cubit.categoriesModel != null,
           builder: (context) =>
               homeBuilder(cubit.homeModel!, cubit.categoriesModel!, context),
           fallback: (context) => buildSearchLoadingIndicator(),
@@ -97,7 +98,8 @@ class ProductsScreen extends StatelessWidget {
                         physics: BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) => buildCategories(
-                            categoriesModel.data.categoriesList[index]),
+                            categoriesModel.data.categoriesList[index],
+                            context),
                         separatorBuilder: (context, index) => SizedBox(
                           width: 5,
                         ),
@@ -139,37 +141,43 @@ class ProductsScreen extends StatelessWidget {
         ),
       );
 
-  Widget buildCategories(DataModel model) => Container(
-        width: 110,
-        child: Column(
-          children: [
-            Container(
-              width: 80.0,
-              height: 80.0,
-              decoration: new BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: MyColors.primary, width: 2),
-                image: new DecorationImage(
-                  image: NetworkImage(
-                    model.image,
+  Widget buildCategories(DataModel model, context) => InkWell(
+        onTap: () {
+          ShopCubit.get(context).getCategoryData(categoryId: model.id);
+          navigateTo(context, CategoryItemScreen(name: model.name));
+        },
+        child: Container(
+          width: 110,
+          child: Column(
+            children: [
+              Container(
+                width: 80.0,
+                height: 80.0,
+                decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: MyColors.primary, width: 2),
+                  image: new DecorationImage(
+                    image: NetworkImage(
+                      model.image,
+                    ),
+                    fit: BoxFit.cover,
                   ),
-                  fit: BoxFit.cover,
                 ),
               ),
-            ),
-            Text(
-              model.name.toUpperCase(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 13,
-                fontFamily: 'Cairo',
-                color: MyColors.light,
-              ),
-              textAlign: TextAlign.center,
-            )
-          ],
+              Text(
+                model.name.toUpperCase(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                  fontFamily: 'Cairo',
+                  color: MyColors.light,
+                ),
+                textAlign: TextAlign.center,
+              )
+            ],
+          ),
         ),
       );
 

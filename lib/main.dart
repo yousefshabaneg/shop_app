@@ -13,7 +13,7 @@ import 'package:shop_app/presentation/screens/on_boarding_screen.dart';
 import 'package:shop_app/shared/constants/constants.dart';
 import 'package:shop_app/shared/styles/themes.dart';
 
-Widget chooseWidget({required bool onBoarding, String? token}) {
+Widget chooseStartupWidget({required bool onBoarding, String? token}) {
   if (onBoarding) {
     return token != null ? ShopLayout() : LoginScreen();
   }
@@ -28,7 +28,7 @@ void main() async {
   bool onBoarding = CashHelper.getData(key: 'onBoarding') ?? false;
   token = CashHelper.getData(key: 'token');
   print(token);
-  Widget widget = chooseWidget(onBoarding: onBoarding, token: token);
+  Widget widget = chooseStartupWidget(onBoarding: onBoarding, token: token);
 
   runApp(MyApp(onBoarding, widget));
 }
@@ -53,10 +53,8 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        themeMode: ThemeMode.dark,
-        home: OnBoardingScreen(),
+        theme: shopTheme,
+        home: widget,
         builder: BotToastInit(),
         navigatorObservers: [BotToastNavigatorObserver()],
       ),

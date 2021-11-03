@@ -13,7 +13,7 @@ class DioHelper {
     dio = Dio(options);
   }
 
-  static Map<String, dynamic> _headers(lang, token) => {
+  static Map<String, dynamic> getHeaders(lang, token) => {
         'lang': lang,
         'Authorization': token ?? '',
         'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ class DioHelper {
     String lang = 'en',
     String? token,
   }) async {
-    dio.options.headers = _headers(lang, token);
+    dio.options.headers = getHeaders(lang, token);
     try {
       Response response = await dio.get(url, queryParameters: query);
       return response.data;
@@ -42,7 +42,7 @@ class DioHelper {
     String lang = 'en',
     String? token,
   }) async {
-    dio.options.headers = _headers(lang, token);
+    dio.options.headers = getHeaders(lang, token);
     return dio
         .post(url, queryParameters: query, data: data)
         .catchError((error) {
@@ -57,8 +57,7 @@ class DioHelper {
     String lang = 'en',
     String? token,
   }) async {
-    dio.options.headers = _headers(lang, token);
-    dio.options.contentType = Headers.formUrlEncodedContentType;
+    dio.options.headers = getHeaders(lang, token);
     return dio
         .put(
       url,
@@ -75,8 +74,7 @@ class DioHelper {
     String lang = 'en',
     String? token,
   }) async {
-    dio.options.headers = _headers(lang, token);
-    dio.options.contentType = Headers.formUrlEncodedContentType;
+    dio.options.headers = getHeaders(lang, token);
     return dio
         .delete(
       url,

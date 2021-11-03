@@ -46,7 +46,6 @@ class ShopCubit extends Cubit<ShopStates> {
   }
 
   var productsMap = {};
-  var categoryProductsMap = {};
 
   HomeModel? homeModel;
   void getHomeData() {
@@ -71,10 +70,7 @@ class ShopCubit extends Cubit<ShopStates> {
     emit(ShopLoadingCategoryItemDataState());
     DioHelper.getData(url: "categories/$categoryId", token: token).then((json) {
       categoryItemModel = CategoryItemModel.fromJson(json);
-      var i = 0;
-      categoryItemModel!.data.products.forEach((element) {
-        categoryProductsMap[element.id] = i++;
-      });
+      categoryItemModel!.data.products.forEach((element) {});
       emit(ShopSuccessCategoryItemDataState());
     }).catchError((error) {
       print('GET Home Model ERROR');
