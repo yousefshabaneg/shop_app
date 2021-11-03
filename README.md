@@ -6,7 +6,6 @@
 ### On Boarding
 <p align="center">
  <img src="https://i.ibb.co/MkVfmTn/on1.png"  width="300" >
- <i
 <img src="https://i.ibb.co/yQdN2DT/on2.png"  width="300" >
 </p>
 
