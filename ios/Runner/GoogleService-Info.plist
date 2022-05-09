@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>960706500012-8o0oe1ohakujq5jgms71ggi6la9f88d3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.960706500012-8o0oe1ohakujq5jgms71ggi6la9f88d3</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>960706500012-kd7duccm2egohfbsanbt4tkemtvme044.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC909b4gWjSXbjr69-biouJYu4NbxMhgNU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>960706500012</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.shopApp.flutter.shopApp</string>
+	<key>PROJECT_ID</key>
+	<string>ysh-shopping-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ysh-shopping-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:960706500012:ios:531238c46f22f52cb81609</string>
+</dict>
+</plist>

@@ -12,6 +12,7 @@ import 'package:shop_app/presentation/screens/login_screen.dart';
 import 'package:shop_app/presentation/screens/on_boarding_screen.dart';
 import 'package:shop_app/shared/constants/constants.dart';
 import 'package:shop_app/shared/styles/themes.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget chooseStartupWidget({required bool onBoarding, String? token}) {
   if (onBoarding) {
@@ -51,12 +52,15 @@ class MyApp extends StatelessWidget {
             ..getOrders(),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: shopTheme,
-        home: widget,
-        builder: BotToastInit(),
-        navigatorObservers: [BotToastNavigatorObserver()],
+      child: ScreenUtilInit(
+        designSize: Size(1440, 2560),
+        builder: () => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: shopTheme,
+          home: OnBoardingScreen(),
+          builder: BotToastInit(),
+          navigatorObservers: [BotToastNavigatorObserver()],
+        ),
       ),
     );
   }
