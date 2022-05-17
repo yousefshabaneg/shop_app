@@ -1,4 +1,4 @@
-# Shopping App - Flutter - Null Safety.
+# Shopping Application usign Flutter framework - RESTFul Api.
 
 ## Video OverView [facebook](https://www.facebook.com/groups/mansouracademy/posts/3064258653853585/)
 
